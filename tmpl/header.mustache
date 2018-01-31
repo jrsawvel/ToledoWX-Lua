@@ -22,21 +22,20 @@
 
 <div data-role="header" data-theme="b" data-position="fixed" data-tap-toggle="false">
 <h1>{{site_name}}</h1>
-<!-- tmpl_if refresh_button -->
-  <a href="<!-- tmpl_var name="refresh_button_url" -->" data-icon="refresh" data-iconpos="notext"  onclick="location.reload(true)" class="ui-btn-right"  >Refresh</a>  
-<!-- tmpl_else -->
-<!-- tmpl_if back_and_home -->
-  <a href="<!-- tmpl_var name="back_button_url" -->" data-icon="arrow-l" data-iconpos="notext" data-direction="reverse">Back</a> 
+{{#refresh_button}} 
+  <a href="{{{refresh_button_url}}}" data-icon="refresh" data-iconpos="notext"  onclick="location.reload(true)" class="ui-btn-right"  >Refresh</a>  
+{{/refresh_button}} 
+{{#back_and_home}}
+  <a href="{{{back_button_url}}}" data-icon="arrow-l" data-iconpos="notext" data-direction="reverse">Back</a> 
   <a href="{{{home_page}}}" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a> 
-<!-- tmpl_else -->
-<!-- tmpl_if back_and_refresh -->
+{{/back_and_home}}
+{{#back_and_refresh}} 
   <a href="{{{home_page}}}" data-icon="arrow-l" data-iconpos="notext" data-direction="reverse">Back</a> 
-  <a href="<!-- tmpl_var name="refresh_button_url" -->" data-icon="refresh" data-iconpos="notext" onclick="location.reload(true)" >Refresh</a> 
-<!-- tmpl_else -->
+  <a href="{{{refresh_button_url}}}" data-icon="refresh" data-iconpos="notext" onclick="location.reload(true)" >Refresh</a> 
+{{/back_and_refresh}}
+{{#basic_page}}
   <a href="{{{home_page}}}" data-icon="arrow-l" data-iconpos="notext"  data-direction="reverse">Back</a> 
-<!-- /tmpl_if -->
-<!-- /tmpl_if -->
-<!-- /tmpl_if -->
+{{/basic_page}}
 </div>
   
 <div class="scroll_text">
