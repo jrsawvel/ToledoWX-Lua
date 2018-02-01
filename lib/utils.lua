@@ -48,5 +48,10 @@ function M.get_date_time()
 end
 
 
+function M.remove_html (str)
+    str = string.gsub(str, "<([^>])+>|&([^;])+;", "")
+    return str
+end
+
 return M
 
