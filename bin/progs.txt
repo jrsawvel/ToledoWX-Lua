@@ -1,0 +1,22 @@
+ [X] wx-create-error-page.pl	
+ [X] wx-create-external-links-page.pl
+ [X] wx-create-more-radars-maps-page.pl
+ [X] wx-create-radar-page.pl
+ [X] wx-get-afds.pl
+ [X] wx-get-marine-forecast.pl
+ [X] wx-get-outlook-day-4-8.pl
+ [X] wx-get-outlook-gifs.pl
+ [X] wx-get-outlook-html.pl
+ [X] wx-get-spc-images.pl
+ [X] wx-get-discussion.pl
+ [X] wx-get-det-discussion.pl
+ [X] wx-get-nind-discussion.pl
+ [X] wx-get-hazardous.pl
+
+
+wx-get-forecast.pl
+wx-get-conditions.pl
+wx-get-hourly-forecast.pl
+wx-create-index-page.pl
+wx-get-forecastio-info.pl
+alexa.pl
