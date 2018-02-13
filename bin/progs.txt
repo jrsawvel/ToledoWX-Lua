@@ -12,11 +12,13 @@
  [X] wx-get-det-discussion.pl
  [X] wx-get-nind-discussion.pl
  [X] wx-get-hazardous.pl
+ [X] wx-get-forecast.pl
 
 
-wx-get-forecast.pl
-wx-get-conditions.pl
+
 wx-get-hourly-forecast.pl
+
+wx-get-conditions.pl
 wx-create-index-page.pl
 wx-get-forecastio-info.pl
 alexa.pl

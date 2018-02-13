@@ -11,4 +11,5 @@
 ./get-det-discussion.lua            2>> ../log/error.txt
 ./get-nind-discussion.lua           2>> ../log/error.txt
 ./get-hazardous.lua                 2>> ../log/error.txt
+./get-forecast.lua                  2>> ../log/error.txt
 ./create-error-page.lua             2>> ../log/error.txt
