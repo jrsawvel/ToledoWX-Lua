@@ -1,0 +1,29 @@
+{{> header}}
+<strong>Toledo Hourly Forecast</strong>
+{{#hourly_loop}}
+
+<p>
+<strong>{{{time}}}</strong> - 
+<small>{{{date}}}</small> 
+<br />
+<small>temp:</small> {{{temperature}}} F
+<br />
+<small>wind:</small> {{{winddirection}}}
+ {{{windspeed}}} mph
+{{#windchillexists}} 
+<br />
+<small>wind chill:</small> {{{windchill}}} F
+{{/windchillexists}}
+<br />
+<small>precip chance</small> {{{precipchance}}} % 
+<br />
+<small>cloud cover amount</small> {{{cloudamount}}} % 
+</p>
+
+{{/hourly_loop}}
+{{> footer}}
+
+
+
+
+

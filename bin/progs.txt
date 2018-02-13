@@ -13,10 +13,8 @@
  [X] wx-get-nind-discussion.pl
  [X] wx-get-hazardous.pl
  [X] wx-get-forecast.pl
+ [X] wx-get-hourly-forecast.pl
 
-
-
-wx-get-hourly-forecast.pl
 
 wx-get-conditions.pl
 wx-create-index-page.pl

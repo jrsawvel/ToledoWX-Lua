@@ -17,7 +17,7 @@ local utils  = require "utils"
 
 
 local url = config.get_value_for("lucas_county_hourly_forecast_json")
-url = "http://testcode.soupmode.com/hourly.json"
+-- url = "http://testcode.soupmode.com/hourly.json"
 
 local content = {}
 
@@ -41,55 +41,87 @@ local lua_table = cjson.decode(content)
 
 local months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
 
+-- each period is 12 hours
+local periods = {"0", "1", "2"}
 
-local first_12_hours  = lua_table.PeriodNameList["0"]
-local second_12_hours = lua_table.PeriodNameList["1"]
-local third_12_hours  = lua_table.PeriodNameList["2"]
+local p
 
+local data_array = {}
 
+for p=1, #periods do
+    local prd = lua_table.PeriodNameList[periods[p]]
 
-local first_12_hours_temperature           = lua_table[first_12_hours].temperature
-local first_12_hours_weather               = lua_table[first_12_hours].weather
-local first_12_hours_winddirectioncardinal = lua_table[first_12_hours].windDirectionCardinal
-local first_12_hours_pop                   = lua_table[first_12_hours].pop
-local first_12_hours_unixtime              = lua_table[first_12_hours].unixtime
-local first_12_hours_cloudamount           = lua_table[first_12_hours].cloudAmount
-local first_12_hours_windchill             = lua_table[first_12_hours].windChill
-local first_12_hours_windspeed             = lua_table[first_12_hours].windSpeed
-local first_12_hours_time                  = lua_table[first_12_hours].time
+    -- tables. each table contains 12 hours of data for the variable.
 
+    local t_temperature           = lua_table[prd].temperature
+    local t_weather               = lua_table[prd].weather
+    local t_winddirectioncardinal = lua_table[prd].windDirectionCardinal
+    local t_pop                   = lua_table[prd].pop
+    local t_unixtime              = lua_table[prd].unixtime
+    local t_cloudamount           = lua_table[prd].cloudAmount
+    local t_windchill             = lua_table[prd].windChill
+    local t_windspeed             = lua_table[prd].windSpeed
+    local t_time                  = lua_table[prd].time
 
-local loop = {}
+    local loop = {}
 
-for i=1,#first_12_hours_temperature do
+    local i
 
-    local dt = os.date("*t", first_12_hours_unixtime[i])
-    local secs = 5 * 3600
-    if ( dt.isdst ) then
-        secs = 4 * 3600
+    for i=1,#t_temperature do
+
+        local dt = os.date("*t", t_unixtime[i])
+        local secs = 5 * 3600
+        if ( dt.isdst ) then
+            secs = 4 * 3600
+        end
+        dt = os.date("*t", t_unixtime[i] - secs)
+
+        local hash = {}
+
+        hash.time            = t_time[i] 
+        hash.date            = months[dt.month] .. " " .. dt.day .. ", " .. dt.year
+        hash.temperature     = t_temperature[i] 
+        hash.winddirection   = t_winddirectioncardinal[i] 
+        hash.windspeed       = t_windspeed[i] 
+        hash.windchill       = t_windchill[i]
+        hash.precipchance    = t_pop[i]
+        hash.cloudamount     = t_cloudamount[i]
+
+        hash.windchillexists = false
+        if ( hash.windchill ~= nil and utils.is_numeric(hash.windchill) ) then
+            hash.windchillexists = true
+        end
+
+        loop[i] = hash
     end
-    dt = os.date("*t", first_12_hours_unixtime[i] - secs)
 
-    local hash = {}
-
-    hash.time            = first_12_hours_time[i] 
-    hash.date            = months[dt.month] .. " " .. dt.day - 1 
-    hash.temp            =  first_12_hours_temperature[i] 
-    hash.windirection    = first_12_hours_winddirectioncardinal[i] 
-    hash.windspeed       = first_12_hours_windspeed[i] 
-    hash.windchill       = first_12_hours_windchill[i]
-    hash.precipchance    = first_12_hours_pop[i]
-    hash.cloudamount     = first_12_hours_cloudamount[i]
-
-    hash.windchillexists = false
-    if ( hash.windchill ~= nil and utils.is_numeric(hash.windchill) ) then
-        hash.windchillexists = true
+    if ( p == 1 ) then
+        data_array = loop
+    else 
+        for k,v in ipairs(loop) do
+            table.insert(data_array, v)
+        end
     end
-
-    loop[i] = hash
 end
 
+-- utils.table_print(data_array)
 
-utils.table_print(loop)
+
+
+page.set_template_name("hourlyforecast");
+
+page.set_template_variable("hourly_loop" ,data_array);
+
+page.set_template_variable("basic_page", true);
+
+local html_output = page.get_output("Hourly Forecast")
+
+local output_filename =  config.get_value_for("htmldir") .. config.get_value_for("wx_hourly_forecast_output_file")
+
+local o = assert(io.open(output_filename, "w"))
+
+o:write(html_output)
+
+o:close()
 
 
