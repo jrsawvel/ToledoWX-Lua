@@ -13,4 +13,5 @@
 ./get-hazardous.lua                 2>> ../log/error.txt
 ./get-forecast.lua                  2>> ../log/error.txt
 ./get-hourly-forecast.lua           2>> ../log/error.txt
+./get-conditions.lua                2>> ../log/error.txt
 ./create-error-page.lua             2>> ../log/error.txt

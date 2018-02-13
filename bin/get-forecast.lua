@@ -10,9 +10,10 @@ local cjson = require "cjson"
 package.path = package.path .. ';/home/toledoweatherlua/ToledoWXLua/lib/?.lua'
 
 -- my modules
-local config = require "config"
-local page   = require "page"
-local utils  = require "utils"
+local config   = require "config"
+local page     = require "page"
+local utils    = require "utils"
+local wxutils  = require "wxutils"
 
 
 ---------------------------
@@ -74,7 +75,7 @@ end
 
 -- utils.table_print(loop)
 
-local tmp_hash = utils.reformat_nws_date_time(creation_date)
+local tmp_hash = wxutils.reformat_nws_date_time(creation_date)
 
 creation_date = tmp_hash["date"] .. " "  .. tmp_hash["time"] .. " " .. tmp_hash["period"]
 

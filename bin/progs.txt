@@ -14,9 +14,9 @@
  [X] wx-get-hazardous.pl
  [X] wx-get-forecast.pl
  [X] wx-get-hourly-forecast.pl
+ [X] wx-get-conditions.pl
 
 
-wx-get-conditions.pl
 wx-create-index-page.pl
 wx-get-forecastio-info.pl
 alexa.pl
