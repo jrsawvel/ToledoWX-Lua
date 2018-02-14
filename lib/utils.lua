@@ -3,6 +3,19 @@
 
 local M = {}
 
+-- https://stackoverflow.com/questions/19664666/check-if-a-string-isnt-nil-or-empty-in-lua
+function M.is_empty(s)
+  return s == nil or s == ''
+
+--[[
+    if s==nil or s=='' then
+        return true
+    else
+        return false
+    end
+]]
+end
+
 
 function M.trim_spaces (str)
     if (str == nil) then

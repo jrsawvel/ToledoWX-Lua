@@ -8,6 +8,43 @@ local utils    = require "utils"
 
 
 
+-- sometimes, need to pull the time from nws messages and not from xml files 
+-- because it's not listed in an xml file.
+
+function M.reformat_nws_text_time(str, zone)
+-- # format: 509 am to 5:09 am and 1442 to 2:42 pm
+
+    local time = utils.split(str, ' ')
+
+    local prd = time[2]  -- am or pm
+
+    if string.len(time[1]) == 3 then
+        time[1] = "0" .. str
+    end 
+
+    local hr  = string.sub(time[1], 1, 2)
+    local min = string.sub(time[1], 3, 4)
+
+    hr = tonumber(hr)
+    min = tonumber(min)
+
+    if  zone ~= nil and zone == "cdt" then
+        hr = hr + 1
+        if hr == 13 then
+            hr = 1
+        end
+
+        if hr == 12 and prd == "am" then
+            prd = "pm"
+        elseif hr == 12 and prd == "pm" then 
+            prd = "am"
+        end
+    end
+
+    return string.format("%d:%02d%s", hr, min, prd)
+end
+
+
 
 
 --convert this 2018-02-09T18:02:23-05:00 into a better format
