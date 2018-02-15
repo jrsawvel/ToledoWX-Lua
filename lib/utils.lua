@@ -3,6 +3,24 @@
 
 local M = {}
 
+
+
+-- https://gist.github.com/balaam/3122129
+function M.reverse_list(tbl)
+  for i=1, math.floor(#tbl / 2) do
+    tbl[i], tbl[#tbl - i + 1] = tbl[#tbl - i + 1], tbl[i]
+  end
+  return tbl
+end
+
+
+
+-- https://stackoverflow.com/questions/20284515/capitalize-first-letter-of-every-word-in-lua
+function M.ucfirst_each_word(str)
+    return(str:gsub("(%l)(%w*)", function(a,b) return string.upper(a)..b end))
+end
+
+
 -- https://stackoverflow.com/questions/19664666/check-if-a-string-isnt-nil-or-empty-in-lua
 function M.is_empty(s)
   return s == nil or s == ''
