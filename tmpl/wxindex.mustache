@@ -2,7 +2,7 @@
 
     <ul data-role="listview" data-inset="false" data-divider-theme="b">
     {{#mesoscale_loop}}
-      <li data-icon="alert"><a href="<!-- tmpl_var name="wxhome" -->/mesoscale<!-- tmpl_var name="mdnum" -->.html"><span class="wx-alert">Mesoscale Discussion</span> <span class="wx-minor-text"> #<!-- tmpl_var name="mdnum" --> <!-- tmpl_var name="mdtime" --></span></a></li> 
+      <li data-icon="alert"><a href="{{{wxhome}}}/mesoscale{{{mdnum}}}.html"><span class="wx-alert">Mesoscale Discussion</span> <span class="wx-minor-text"> #{{{mdnum}}} {{{mdtime}}}</span></a></li> 
     {{/mesoscale_loop}} 
     {{#buttonalerts_loop}}
       <li data-icon="alert"><a href="{{{wxhome}}}/{{{url}}}"><span class="wx-alert">{{{alert}}}</span> <span class="wx-minor-text">{{{alerttime}}}</span></a></li> 

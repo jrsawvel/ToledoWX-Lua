@@ -22,36 +22,173 @@ local wxutils  = require "wxutils"
 
 local function get_web_page(url)
     local content = {}
+
+    local ua_str = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) "
+    ua_str = ua_str .. "Chrome/62.0.3202.97 Safari/537.36"
+
     local num, status_code, headers, status_string = http.request {
         method = "GET",
         url = url,
         headers = {
-            ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
+            ["User-Agent"] = ua_str,
             ["Accept"] = "*/*"
         },
-        sink = ltn12.sink.table(content)   
+        sink = ltn12.sink.table(content)
     }
     content = table.concat(content)
     -- utils.table_print(lua_table)
-    return content 
+    return content
+end
+
+
+-- attn...wfo...
+-- if (  $mddesc =~ m/CLE/s   or  $mddesc =~ m/DTX/s  or  $mddesc =~ m/IWX/s  ) {
+local function regional_md(str)
+    local return_val = false
+    local one, two = rex.match(str, "attn(.*)wfo(.*)", 1, "si")
+    if utils.is_empty(one) == false then
+        if rex.match(two, "CLE",1,"s") or rex.match(two, "DTX",1,"s") or  rex.match(two, "IWX",1,"s") then
+            return_val = true
+        end
+    end
+    return return_val
 end
 
 
 
+local function download_gif(gif_file)
+    local imagedir = config.get_value_for("imagedir")
+    local spc_gif_url = config.get_value_for("spcmesoscalegifhome") .. "/" .. gif_file
+    local dayfilename = imagedir .. gif_file
 
-local function get_mesoscale_info()
-    -- local md_xml = get_web_page(config.get_value_for("spc_md_xml"))
-    local md_xml = get_web_page("http://testcode.soupmode.com/spcmdrss.xml")
-    local parsed = feedparser.parse(md_xml)
-    utils.table_print(parsed) 
-
-    local a_entries = parsed.entries
-
-    for i=1,#a_entries do
-        print(a_entries[i].title)
+    if ( string.match(dayfilename, '^[a-zA-Z0-9/.%-_]+$') == nil ) then
+        error("Bad filename " .. dayfilename ".")
     end
 
+    local bincontent = {}
 
+    local num, status_code, headers, status_string = http.request {
+        method = "GET",
+        url = spc_gif_url,
+        headers = {
+            ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
+            ["Accept"] = "*/*"
+        },
+        sink = ltn12.sink.table(bincontent)   
+    }
+
+    if ( status_code == 200 ) then
+        bincontent = table.concat(bincontent)
+        local o = assert(io.open(dayfilename, "wb"))
+        o:write(bincontent)
+        o:close()
+    else 
+        error("Failed to download gif file " .. dayfilename .. ".")
+    end
+end
+
+
+
+local function create_mesoscale_file(h)
+    local gif_file = "mcd" .. h.mdnum .. ".gif"
+    download_gif(gif_file)
+
+    local img = '<img src="' ..  config.get_value_for("imagehome") .. '/' .. gif_file .. '">'
+
+    h.mdcontent = img .. '<br />' .. h.mdcontent
+
+    page.set_template_name("mesoscale")
+    page.set_template_variable("content", h.mdcontent)
+    page.set_template_variable("basic_page", true)
+
+    local html_output = page.get_output("Mesoscale Discussion")
+
+    local output_filename =  h.mdfilename
+    local o = assert(io.open(output_filename, "w"))
+    o:write(html_output)
+    o:close()
+end
+
+
+local function process_md_item(h_item)
+
+    local wxhome = config.get_value_for("wxhome")
+
+    local hash = {}
+    local mdhash = {}
+    local content
+    local link
+    local mdnum
+    local mdtime
+
+    local mdlink = h_item.links[1].href
+    local mddesc = h_item.summary
+
+    if regional_md(mddesc) then
+        link = mdlink
+        content = mddesc
+        content = utils.remove_html(content)
+        content = utils.trim_spaces(content)
+        content = string.lower(content)
+
+        local one, two = rex.match(content, "^([0-9]* [a-z]*) est(.*)$", 1, "m")
+        if utils.is_empty(one) == false then
+            mdtime = one
+            mdtime = wxutils.reformat_nws_text_time(mdtime)
+        else
+            one, two = rex.match(content,   "^([0-9]* [a-z]*) cst(.*)$", 1, "m")
+            if utils.is_empty(one) == false then
+                mdtime = one
+                mdtime = wxutils.reformat_nws_text_time(mdtime, "cst")
+            end
+        end
+
+        content = utils.newline_to_br(content)
+
+        local htmldir = config.get_value_for("htmldir")
+
+        mdnum = rex.match(link, "/md/md(.*).html")
+        if utils.is_empty(mdnum) then
+            mdnum = 0
+        end
+
+        mdhash.mdcontent = content
+        mdhash.mdfilename = htmldir .. "mesoscale" .. mdnum .. ".html"
+        mdhash.mdnum = mdnum
+        mdhash.mdtim = mdtime
+
+        hash.mdnum = mdnum
+        hash.mdtime = mdtime
+        hash.wxhome = wxhome
+
+        create_mesoscale_file(mdhash)
+
+    end
+
+    return hash
+
+end
+
+
+local function get_mesoscale_info()
+    local md_xml = get_web_page(config.get_value_for("spc_md_xml"))
+--    local md_xml = get_web_page("http://testcode.soupmode.com/spcmdrss.xml")
+    local parsed = feedparser.parse(md_xml)
+--    utils.table_print(parsed)
+
+    local a_entries = parsed.entries -- rss items
+    local a_list = {}
+    local counter = 1
+
+    for i=1,#a_entries do
+        local hash = process_md_item(a_entries[i])
+        if next(hash) ~= nil then
+            a_list[counter] = hash
+            counter = counter + 1
+        end
+    end
+
+    return a_list
 end
 
 
@@ -108,11 +245,11 @@ end
 
 
 
- local zone_json  = get_web_page("http://testcode.soupmode.com/zone.json")
+--  local zone_json  = get_web_page("http://testcode.soupmode.com/zone.json")
 -- local zone_json  = get_web_page("http://testcode.soupmode.com/zone2.json")
 -- local zone_json  = get_web_page("http://testcode.soupmode.com/zone3.json")
 
--- local zone_json  = get_web_page(config.get_value_for("lucas_county_zone_json"))
+local zone_json  = get_web_page(config.get_value_for("lucas_county_zone_json"))
 if zone_json == nil  then
     error("Could not retrieve JSON for Lucas County Zone.")
 end
@@ -150,12 +287,12 @@ local a_hazard_url  = zone_table.data.hazardUrl
 local h_alerts = {}
 
 for i=1, #a_hazard_text do
-    local hazard     = string.lower(a_hazard_text[i]) 
+    local hazard     = string.lower(a_hazard_text[i])
     local hazard_url = a_hazard_url[i]
     if hazard == "hazardous weather outlook" then
         no_important_hazardous_outlook_exists = false
     end
-    h_alerts[hazard] = hazard_url    
+    h_alerts[hazard] = hazard_url
 end
 
 
@@ -189,7 +326,7 @@ for k,v in pairs(h_alerts) do
 
     local alert_time, alert_date -- won't use alert_date for now. maybe for a custom alerts.json file
 
-    if msg ~= nil then 
+    if msg ~= nil then
         alert_time, alert_date = rex.match(msg, "^(.*)est(.*)$", 1, "m")
         if utils.is_empty(alert_time) == false then
             alert_time = wxutils.reformat_nws_text_time(alert_time)
@@ -243,7 +380,6 @@ end
 local meso_loop = get_mesoscale_info()
 
 
-
 -- possible to-do: create a custom json file that lists all of the headlines:
 -- hwo, mds, special weather statements, watches, warnings, advisories, etc.
 -- for what purpose? i don't know yet.
@@ -266,11 +402,11 @@ page.set_template_variable("forecast_time", forecast_creation_date)
 page.set_template_variable("discussion_time", discussion_time)
 page.set_template_variable("marine_time", marine_time)
 page.set_template_variable("wxhome", config.get_value_for("wxhome"))
+page.set_template_variable("mesoscale_loop", meso_loop)
 
--- Web::set_template_loop_data("mesoscale_loop" , \@meso_loop) if @meso_loop;
 local html_output = page.get_output("Toledo Weather")
 
-local output_filename =  config.get_value_for("htmldir") .. config.get_value_for("wx_index_output_file") 
+local output_filename =  config.get_value_for("htmldir") .. config.get_value_for("wx_index_output_file")
 local o = assert(io.open(output_filename, "w"))
 o:write(html_output)
 o:close()

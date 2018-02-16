@@ -3,6 +3,7 @@
 
 local M = {}
 
+local rex         = require "rex_pcre"
 
 
 -- https://gist.github.com/balaam/3122129
@@ -80,8 +81,12 @@ end
 
 
 function M.remove_html (str)
-    str = string.gsub(str, "<([^>])+>|&([^;])+;", "")
-    return str
+    local tmp_str = rex.gsub(str, "<([^>])+>|&([^;])+;", "", nil, "sx")
+    if M.is_empty(tmp_str) then
+        return str
+    else
+        return tmp_str
+    end
 end
 
 
