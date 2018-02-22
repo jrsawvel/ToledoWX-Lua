@@ -1,5 +1,18 @@
-./run-all.sh: line 1: ./get-marine-forecast.pl: No such file or directory
-./run-all.sh: line 2: ./get-afds.pl: No such file or directory
-./run-all.sh: line 3: ./create-radar-page.pl: No such file or directory
-./run-all.sh: line 4: ./create-more-radars-maps-page.pl: No such file or directory
-./run-all.sh: line 5: ./create-external-links-page.pl: No such file or directory
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-forecast.lua:40: Expected value but found invalid token at character 1
+stack traceback:
+	[C]: in function 'cjson.decode'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-forecast.lua:40: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:37: Expected value but found invalid token at character 1
+stack traceback:
+	[C]: in function 'cjson.decode'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:37: in function 'read_json_zone_file'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:134: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/lib/utils.lua:122: attempt to index a nil value (local 'str')
+stack traceback:
+	/home/toledoweatherlua/ToledoWXLua/lib/utils.lua:122: in function 'utils.split'
+	/home/toledoweatherlua/ToledoWXLua/lib/wxutils.lua:66: in function 'wxutils.reformat_nws_date_time'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:224: in local 'get_lc_alerts'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:419: in main chunk
+	[C]: in ?

@@ -1,4 +1,4 @@
-#!/usr/bin/env lua
+#!/usr/local/bin/lua
 
 -- download SPC convective outlook html pages
 

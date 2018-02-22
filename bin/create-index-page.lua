@@ -1,4 +1,4 @@
-#!/usr/bin/env lua
+#!/usr/local/bin/lua
 
 
 local http        = require "socket.http"
@@ -36,7 +36,6 @@ local function get_web_page(url)
         sink = ltn12.sink.table(content)
     }
     content = table.concat(content)
-    -- utils.table_print(lua_table)
     return content
 end
 
@@ -192,6 +191,75 @@ local function get_mesoscale_info()
 end
 
 
+
+-- Check for any additional alerts, such as flood warnings, that were missed elsewhere, but 
+--    might be listed in this Atom XML file.
+
+local function get_lc_alerts()
+    local https = require("ssl.https") 
+    local body,c,l,h = https.request('https://alerts.weather.gov/cap/wwaatmget.php?x=OHC095&y=0')
+    local parsed = feedparser.parse(body)
+
+    local a_entries = parsed.entries -- atom items
+
+    local a_alert_button_loop = {}
+
+    for i=1,#a_entries do
+        -- a_entries[i].summary
+
+--        local statement, dummy = rex.match(a_entries[i].title, "^(.*) issued(.*)", 1, "m")
+--        if utils.is_empty(statement) == true then
+--            statement = string.sub(a_entries[i].title, 1, 20)
+--        end
+
+        body,c,l,h = https.request(a_entries[i].link)
+    
+        if body == nil then
+            error("Could not retrieve " .. a_entries[i].link .. ".")
+        end
+
+        local iso_time = rex.match(body, "<sent>(.*)</sent>", 1, "s") 
+        local h_dt = wxutils.reformat_nws_date_time(iso_time)
+        local alert_time = h_dt.time .. h_dt.period
+
+        local event = rex.match(body, "<event>(.*)</event>", 1, "s") 
+
+        local headline = rex.match(body, "<headline>(.*)</headline>", 1, "s") 
+
+        local msg  = rex.match(body, "<description>(.*)</description>", 1, "s") 
+
+        msg = headline .. "\n\n" .. msg
+        msg = utils.remove_html(msg)
+        msg = utils.trim_spaces(msg)
+        msg = utils.newline_to_br(msg)
+        
+        local filename = event 
+        filename = string.lower(filename)
+        filename = string.gsub(filename, ' ', '-')
+        filename = filename .. ".html"
+
+        page.set_template_name("specialstatement")
+        page.set_template_variable("msg", msg)
+        page.set_template_variable("basic_page", true)
+        local html_output = page.get_output(event)
+
+        local output_filename =  config.get_value_for("htmldir") .. filename
+        local o = assert(io.open(output_filename, "w"))
+        o:write(html_output)
+        o:close()
+
+        local h_button = {}
+        h_button.alert = event
+        h_button.url   = filename
+        h_button.alerttime = alert_time
+        h_button.wxhome = config.get_value_for("wxhome")
+
+        a_alert_button_loop[i] = h_button
+    end
+
+    return a_alert_button_loop
+
+end
 
 
 --------------------------------------------
@@ -379,6 +447,8 @@ end
 
 local meso_loop = get_mesoscale_info()
 
+local lc_alerts = get_lc_alerts()
+
 
 -- possible to-do: create a custom json file that lists all of the headlines:
 -- hwo, mds, special weather statements, watches, warnings, advisories, etc.
@@ -403,6 +473,7 @@ page.set_template_variable("discussion_time", discussion_time)
 page.set_template_variable("marine_time", marine_time)
 page.set_template_variable("wxhome", config.get_value_for("wxhome"))
 page.set_template_variable("mesoscale_loop", meso_loop)
+page.set_template_variable("lc_alerts_loop", lc_alerts)
 
 local html_output = page.get_output("Toledo Weather")
 
