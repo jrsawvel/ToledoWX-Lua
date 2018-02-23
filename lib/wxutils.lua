@@ -154,6 +154,18 @@ function M.wind_direction_degrees_to_cardinal(wind_degrees)
 end
 
 
+function M.wind_direction_degrees_to_cardinal_full_name(wind_degrees)  
+
+    local cardinal_arr = {"north", "north-northeast", "northeast", "east-northeast", "east", "east-southeast", "southeast", "south-southeast", "south", "south-southwest", "southwest", "west-southwest", "west", "west-northwest", "northwest", "north-northwest"}
+
+--     local val = utils.round((wind_degrees/22.5)+.5)
+    local val = utils.round(wind_degrees/22.5)
+
+    local idx = val % 16
+
+    return cardinal_arr[idx+1]
+end
+
 
 
 

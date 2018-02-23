@@ -16,7 +16,7 @@
  [X] wx-get-hourly-forecast.pl
  [X] wx-get-conditions.pl
  [X] wx-create-index-page.pl
+ [X] alexa.pl
 
 
 wx-get-forecastio-info.pl
-alexa.pl

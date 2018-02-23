@@ -204,6 +204,11 @@ local function get_lc_alerts()
 
     local a_alert_button_loop = {}
 
+
+    if a_entries[1].title == "There are no active watches, warnings or advisories" then
+        return a_alert_button_loop
+    end
+
     for i=1,#a_entries do
         -- a_entries[i].summary
 

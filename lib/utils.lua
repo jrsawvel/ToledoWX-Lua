@@ -36,6 +36,12 @@ function M.is_empty(s)
 end
 
 
+function M.remove_newline (str)
+    str = string.gsub(str, "[\n]", "")
+    return str
+end
+
+
 function M.trim_spaces (str)
     if (str == nil) then
         return ""

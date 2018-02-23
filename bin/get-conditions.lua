@@ -104,9 +104,10 @@ function parse_json_table (t)
         my_hash.winddirection = wxutils.wind_direction_degrees_to_cardinal(my_hash.winddirection)
     end
 
-    if ( my_hash.windspeed == 0 ) then
+    if ( my_hash.windspeed == "0" ) then
         my_hash.winddirection = "Calm"
         my_hash.windspeed = ""
+        my_hash.windspeedunits = ""
     else
         my_hash.windchill = wxutils.calc_wind_chill(my_hash.temperature, my_hash.windspeed)
         if ( my_hash.windchill ~= 999 ) then

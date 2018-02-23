@@ -1,0 +1,23 @@
+<p>
+{{#express_loop}}
+Here are the conditions at Toledo Express Airport as of {{{updatedate}}}.
+ Weather was {{{weather}}}.
+ Temperature was {{{temperature}}} degrees.
+ Humidity was {{{humidity}}} percent.
+{{#heatindexexists}}
+ The heat index was {{{heatindex}}} degrees.
+{{/heatindexexists}}
+{{#iscalmwind}}
+ The wind was calm.
+{{/iscalmwind}}
+{{#iswindspeed}}
+ The wind was from the {{{winddirection}}} at {{{windspeed}}} {{{windspeedunits}}}.
+{{/iswindspeed}}
+{{#windspeedgustexists}}
+ The winds gusted to {{{windspeedgust}}} {{{windspeedgustunits}}}.
+{{/windspeedgustexists}}
+{{#windchillexists}}
+ The wind chill was  {{{windchill}}} degrees.
+{{/windchillexists}}
+{{/express_loop}}
+</p>
