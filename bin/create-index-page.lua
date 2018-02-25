@@ -192,12 +192,22 @@ end
 
 
 
+local function does_alert_exist (a_alerts, alert)
+    for j=1, #a_alerts do
+       if a_alerts[j].alert == alert then
+           return true
+       end
+    end
+    return false
+end
+
+
 -- Check for any additional alerts, such as flood warnings, that were missed elsewhere, but 
 --    might be listed in this Atom XML file.
 
-local function get_lc_alerts()
+local function get_lc_alerts(a_zone_alerts)
     local https = require("ssl.https") 
-    local body,c,l,h = https.request('https://alerts.weather.gov/cap/wwaatmget.php?x=OHC095&y=0')
+    local body,c,l,h = https.request(config.get_value_for("lucas_county_alerts_xml"))
     local parsed = feedparser.parse(body)
 
     local a_entries = parsed.entries -- atom items
@@ -208,6 +218,8 @@ local function get_lc_alerts()
     if a_entries[1].title == "There are no active watches, warnings or advisories" then
         return a_alert_button_loop
     end
+
+    local already_exists_counter = 0
 
     for i=1,#a_entries do
         -- a_entries[i].summary
@@ -229,6 +241,8 @@ local function get_lc_alerts()
 
         local event = rex.match(body, "<event>(.*)</event>", 1, "s") 
 
+     if does_alert_exist(a_zone_alerts, event) == false then
+
         local headline = rex.match(body, "<headline>(.*)</headline>", 1, "s") 
 
         local msg  = rex.match(body, "<description>(.*)</description>", 1, "s") 
@@ -241,7 +255,7 @@ local function get_lc_alerts()
         local filename = event 
         filename = string.lower(filename)
         filename = string.gsub(filename, ' ', '-')
-        filename = filename .. ".html"
+        filename = "lc-alert-" .. filename .. ".html"
 
         page.set_template_name("specialstatement")
         page.set_template_variable("msg", msg)
@@ -259,7 +273,10 @@ local function get_lc_alerts()
         h_button.alerttime = alert_time
         h_button.wxhome = config.get_value_for("wxhome")
 
-        a_alert_button_loop[i] = h_button
+        a_alert_button_loop[i - already_exists_counter] = h_button
+     else 
+         already_exists_counter = already_exists_counter + 1
+     end
     end
 
     return a_alert_button_loop
@@ -387,7 +404,8 @@ for k,v in pairs(h_alerts) do
 
     local msg
 
-    msg = rex.match(x_text, "<h3>" .. k .. "</h3><pre>(.*)</pre><hr /><br /><h3>", 1, "s")
+--    msg = rex.match(x_text, "<h3>" .. k .. "</h3><pre>(.*)</pre><hr /><br /><h3>", 1, "s")
+    msg = rex.match(x_text, "<h3>" .. k .. "</h3><pre>(.*)</pre><hr/><br/><h3>", 1, "s")
     if  utils.is_empty(msg) then
         msg = rex.match(x_text, "<h3>" .. k .. "</h3><pre>(.*)</pre><hr /><br />", 1, "s")
         if utils.is_empty(msg) then
@@ -452,7 +470,7 @@ end
 
 local meso_loop = get_mesoscale_info()
 
-local lc_alerts = get_lc_alerts()
+local lc_alerts = get_lc_alerts(a_alert_button_loop)
 
 
 -- possible to-do: create a custom json file that lists all of the headlines:

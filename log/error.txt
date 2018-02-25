@@ -151,3 +151,19 @@ stack traceback:
 	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:47: in function 'download_gif'
 	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:108: in main chunk
 	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:114: attempt to concatenate a nil value (local 'status_string')
+stack traceback:
+	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:114: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:37: Expected value but found invalid token at character 2
+stack traceback:
+	[C]: in function 'cjson.decode'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:37: in function 'read_json_zone_file'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:138: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:43: Failed to download gif file /home/toledoweatherlua/root/images/validmd.png.
+stack traceback:
+	[C]: in function 'error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:43: in function 'download_gif'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:61: in main chunk
+	[C]: in ?
