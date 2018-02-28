@@ -1,8 +1,6 @@
 #!/usr/local/bin/lua
 
 
-local http        = require "socket.http"
-local ltn12       = require "ltn12"
 local io          = require "io"
 local cjson       = require "cjson"
 local rex         = require "rex_pcre"
@@ -18,26 +16,6 @@ local page     = require "page"
 local utils    = require "utils"
 local wxutils  = require "wxutils"
 
-
-
-local function get_web_page(url)
-    local content = {}
-
-    local ua_str = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) "
-    ua_str = ua_str .. "Chrome/62.0.3202.97 Safari/537.36"
-
-    local num, status_code, headers, status_string = http.request {
-        method = "GET",
-        url = url,
-        headers = {
-            ["User-Agent"] = ua_str,
-            ["Accept"] = "*/*"
-        },
-        sink = ltn12.sink.table(content)
-    }
-    content = table.concat(content)
-    return content
-end
 
 
 -- attn...wfo...
@@ -170,10 +148,8 @@ end
 
 
 local function get_mesoscale_info()
-    local md_xml = get_web_page(config.get_value_for("spc_md_xml"))
---    local md_xml = get_web_page("http://testcode.soupmode.com/spcmdrss.xml")
+    local md_xml = utils.get_unsecure_web_page(config.get_value_for("spc_md_xml"))
     local parsed = feedparser.parse(md_xml)
---    utils.table_print(parsed)
 
     local a_entries = parsed.entries -- rss items
     local a_list = {}
@@ -291,7 +267,7 @@ end
 
 
 local discussion_url = config.get_value_for("forecast_discussion")
-local discussion_text = get_web_page(discussion_url)
+local discussion_text = utils.get_web_page(discussion_url)
 if discussion_text == nil  then
     error("Could not retrieve " .. discussion_url .. ".")
 end
@@ -306,7 +282,7 @@ end
 
 
 local marine_url = config.get_value_for("marine_forecast")
-local marine_text = get_web_page(marine_url)
+local marine_text = utils.get_web_page(marine_url)
 if marine_text == nil  then
     error("Could not retrieve " .. marine_url .. ".")
 end
@@ -321,7 +297,7 @@ end
 
 
 local haz_url = config.get_value_for("hazardous_outlook")
-local haz_text = get_web_page(haz_url)
+local haz_text = utils.get_web_page(haz_url)
 if haz_text == nil  then
     error("Could not retrieve " .. haz_url .. ".")
 end
@@ -334,12 +310,7 @@ else
 end
 
 
-
---  local zone_json  = get_web_page("http://testcode.soupmode.com/zone.json")
--- local zone_json  = get_web_page("http://testcode.soupmode.com/zone2.json")
--- local zone_json  = get_web_page("http://testcode.soupmode.com/zone3.json")
-
-local zone_json  = get_web_page(config.get_value_for("lucas_county_zone_json"))
+local zone_json  = utils.get_web_page(config.get_value_for("lucas_county_zone_json"))
 if zone_json == nil  then
     error("Could not retrieve JSON for Lucas County Zone.")
 end
@@ -395,7 +366,7 @@ for k,v in pairs(h_alerts) do
 
     local x_text_url = entities.decode(v)
 
-    local x_text = get_web_page(x_text_url)
+    local x_text = utils.get_web_page(x_text_url)
     if x_text == nil  then
         error("Could not retrieve " .. x_text_url .. ".")
     end

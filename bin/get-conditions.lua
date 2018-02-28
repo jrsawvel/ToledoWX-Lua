@@ -1,8 +1,6 @@
 #!/usr/local/bin/lua
 
 
-local http  = require "socket.http"
-local ltn12 = require "ltn12"
 local io    = require "io"
 local cjson = require "cjson"
 
@@ -17,23 +15,7 @@ local wxutils  = require "wxutils"
 
 
 function read_json_zone_file(url)
-
-    local content = {}
-
-    local num, status_code, headers, status_string = http.request {
-        method = "GET",
-        url = url,
-        headers = {
-            ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
-            ["Accept"] = "*/*"
-        },
-        sink = ltn12.sink.table(content)   
-    }
-
-    content = table.concat(content)
-
-    -- utils.table_print(lua_table)
-
+    local content, code, headers, status = utils.get_web_page(url)
     local lua_table = cjson.decode(content)
 
     return parse_json_table(lua_table)

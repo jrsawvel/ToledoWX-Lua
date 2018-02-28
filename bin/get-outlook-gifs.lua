@@ -13,7 +13,6 @@ local config = require "config"
 local page   = require "page"
 
 
-
 function download_gif(gif_file)
 
     local spc_gif_url = config.get_value_for("spcoutlookgifhome") .. "/" .. gif_file

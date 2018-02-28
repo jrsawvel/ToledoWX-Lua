@@ -68,4 +68,3 @@ if ( filename == nil ) then
 end
 
 download_gif(filename, box_img)
-

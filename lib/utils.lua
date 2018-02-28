@@ -3,7 +3,37 @@
 
 local M = {}
 
-local rex         = require "rex_pcre"
+local ltn12 = require "ltn12"
+local http  = require "socket.http"
+local rex   = require "rex_pcre"
+local https = require "ssl.https"
+
+
+
+function M.get_web_page(url)
+    local body,code,headers,status = https.request(url)
+    return body,code,headers,status
+end
+
+
+function M.get_unsecure_web_page(url)
+    local content = {}
+    local ua = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36"
+    ua = ua .. " (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36"
+    local num, status_code, headers, status_string = http.request {
+        method = "GET",
+        url = url,
+        headers = {
+            ["User-Agent"] = ua,
+            ["Accept"] = "*/*"
+        },
+        sink = ltn12.sink.table(content)   
+    }
+    -- get body as string by concatenating table filled by sink
+    content = table.concat(content)
+    return content
+end
+
 
 
 -- https://gist.github.com/balaam/3122129

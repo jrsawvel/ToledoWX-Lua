@@ -1,8 +1,6 @@
 #!/usr/local/bin/lua
 
 
-local http  = require "socket.http"
-local ltn12 = require "ltn12"
 local io    = require "io"
 local cjson = require "cjson"
 local rex         = require "rex_pcre"
@@ -87,26 +85,6 @@ end
 
 
 
-local function get_web_page(url)
-    local content = {}
-
-    local ua_str = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) "
-    ua_str = ua_str .. "Chrome/62.0.3202.97 Safari/537.36"
-
-    local num, status_code, headers, status_string = http.request {
-        method = "GET",
-        url = url,
-        headers = {
-            ["User-Agent"] = ua_str,
-            ["Accept"] = "*/*"
-        },
-        sink = ltn12.sink.table(content)
-    }
-    content = table.concat(content)
-    return content
-end
-
-
 -- attn...wfo...
 -- if (  $mddesc =~ m/CLE/s   or  $mddesc =~ m/DTX/s  or  $mddesc =~ m/IWX/s  ) {
 local function regional_md(str)
@@ -127,7 +105,7 @@ local function get_mds()
 --    url = "http://testcode.soupmode.com/spcmdrss.xml"
 --    url = "http://www.spc.noaa.gov/products/spcmdrss.xml"
 
-    local md_xml = get_web_page(url)
+    local md_xml = utils.get_unsecure_web_page(url)
 
     local parsed = feedparser.parse(md_xml)
 
@@ -156,14 +134,11 @@ end
 --    might be listed in this Atom XML file.
 
 local function get_alerts()
-    local https = require("ssl.https") 
+    local url = config.get_value_for("lucas_county_alerts_xml")
 
-    local url = 'https://alerts.weather.gov/cap/wwaatmget.php?x=OHC095&y=0'
---    url = "http://testcode.soupmode.com/alerts1.xml"
+    local content = utils.get_web_page(url)
 
-    local body,c,l,h = https.request(url)
-
-    local parsed = feedparser.parse(body)
+    local parsed = feedparser.parse(content)
 
     local a_entries = parsed.entries -- atom items
 
@@ -175,13 +150,13 @@ local function get_alerts()
 
     for i=1,#a_entries do
 
-        body,c,l,h = https.request(a_entries[i].link)
+        content = utils.get_web_page(a_entries[i].link)
     
-        if body == nil then
+        if content == nil then
             error("Could not retrieve " .. a_entries[i].link .. ".")
         end
 
-        a_alerts[i] = rex.match(body, "<event>(.*)</event>", 1, "s") 
+        a_alerts[i] = rex.match(content, "<event>(.*)</event>", 1, "s") 
 
     end
 
@@ -192,7 +167,7 @@ end
 
 function get_hazards()
 
-    local zone_json  = get_web_page(config.get_value_for("lucas_county_zone_json"))
+    local zone_json  = utils.get_web_page(config.get_value_for("lucas_county_zone_json"))
     if zone_json == nil  then
         error("Could not retrieve JSON for Lucas County Zone.")
     end
@@ -208,19 +183,7 @@ function get_forecast()
 
     local url = config.get_value_for("lucas_county_zone_json")
 
-    local content = {}
-
-    local num, status_code, headers, status_string = http.request {
-        method = "GET",
-        url = url,
-        headers = {
-            ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
-            ["Accept"] = "*/*"
-        },
-        sink = ltn12.sink.table(content)   
-    }
-
-    content = table.concat(content)
+    local content, code, headers, status = utils.get_web_page(url)
 
     local lua_table = cjson.decode(content)
 
@@ -282,18 +245,7 @@ function get_afd()
 
     local content = {}
 
-    local num, status_code, headers, status_string = http.request {
-        method = "GET",
-        url = url,
-        headers = {
-            ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
-            ["Accept"] = "*/*"
-        },
-        sink = ltn12.sink.table(content)   
-    }
-
-    -- get body as string by concatenating table filled by sink
-    content = table.concat(content)
+    local content = utils.get_web_page(url)
 
     local dummy, synopsis = rex.match(content, "SYNOPSIS([.]*)([^&]*)", nil, "s")
     if utils.is_empty(synopsis) then
@@ -409,21 +361,7 @@ function get_conditions()
 
     local url = config.get_value_for("lucas_county_zone_json")
 
-    local content = {}
-
-    local num, status_code, headers, status_string = http.request {
-        method = "GET",
-        url = url,
-        headers = {
-            ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
-            ["Accept"] = "*/*"
-        },
-        sink = ltn12.sink.table(content)   
-    }
-
-    content = table.concat(content)
-
-    -- utils.table_print(lua_table)
+    local content, code, headers, status = utils.get_web_page(url)
 
     local lua_table = cjson.decode(content)
 

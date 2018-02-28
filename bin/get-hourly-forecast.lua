@@ -1,8 +1,6 @@
 #!/usr/local/bin/lua
 
 
-local http  = require "socket.http"
-local ltn12 = require "ltn12"
 local io    = require "io"
 local cjson = require "cjson"
 
@@ -15,29 +13,11 @@ local page   = require "page"
 local utils  = require "utils"
 
 
-
 local url = config.get_value_for("lucas_county_hourly_forecast_json")
--- url = "http://testcode.soupmode.com/hourly.json"
 
-local content = {}
-
-local num, status_code, headers, status_string = http.request {
-    method = "GET",
-    url = url,
-    headers = {
-        ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
-        ["Accept"] = "*/*"
-    },
-    sink = ltn12.sink.table(content)   
-}
-
--- get body as string by concatenating table filled by sink
-
-content = table.concat(content)
+local content, code, headers, status = utils.get_web_page(url)
 
 local lua_table = cjson.decode(content)
-
--- utils.table_print(lua_table)
 
 local months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
 
@@ -106,8 +86,6 @@ end
 
 -- utils.table_print(data_array)
 
-
-
 page.set_template_name("hourlyforecast");
 
 page.set_template_variable("hourly_loop" ,data_array);
@@ -123,5 +101,3 @@ local o = assert(io.open(output_filename, "w"))
 o:write(html_output)
 
 o:close()
-
-

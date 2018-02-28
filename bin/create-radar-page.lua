@@ -1,6 +1,5 @@
 #!/usr/local/bin/lua
 
-
 package.path = package.path .. ';/home/toledoweatherlua/ToledoWXLua/lib/?.lua'
 
 local config = require "config"

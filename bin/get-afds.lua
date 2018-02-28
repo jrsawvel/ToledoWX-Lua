@@ -1,8 +1,6 @@
 #!/usr/local/bin/lua
 
 
-local http  = require "socket.http"
-local ltn12 = require "ltn12"
 local io    = require "io"
 
 package.path = package.path .. ';/home/toledoweatherlua/ToledoWXLua/lib/?.lua'
@@ -15,26 +13,11 @@ local utils  = require "utils"
 
 
 function get_afd(url) 
-
-    local content = {}
-
-    local num, status_code, headers, status_string = http.request {
-        method = "GET",
-        url = url,
-        headers = {
-            ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
-            ["Accept"] = "*/*"
-        },
-        sink = ltn12.sink.table(content)   
-    }
-
-    -- get body as string by concatenating table filled by sink
-    content = table.concat(content)
+    local content, code, headers, status = utils.get_web_page(url)
     content = string.lower(content)
     content = string.match(content, '<pre class="glossaryproduct">(.*)</pre>')
     content = utils.trim_spaces(content)
     content = utils.newline_to_br(content)
-
     return content
 end
 

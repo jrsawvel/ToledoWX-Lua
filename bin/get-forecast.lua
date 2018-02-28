@@ -1,8 +1,6 @@
 #!/usr/local/bin/lua
 
 
-local http  = require "socket.http"
-local ltn12 = require "ltn12"
 local io    = require "io"
 local cjson = require "cjson"
 
@@ -16,31 +14,14 @@ local utils    = require "utils"
 local wxutils  = require "wxutils"
 
 
----------------------------
-
 
 local url = config.get_value_for("lucas_county_zone_json")
 
-local content = {}
-
-local num, status_code, headers, status_string = http.request {
-    method = "GET",
-    url = url,
-    headers = {
-        ["User-Agent"] = "Mozilla/5.0 (X11; CrOS armv7l 9901.77.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36",
-        ["Accept"] = "*/*"
-    },
-    sink = ltn12.sink.table(content)   
-}
-
--- get body as string by concatenating table filled by sink
-
-content = table.concat(content)
+local content, code, headers, status = utils.get_web_page(url)
 
 local lua_table = cjson.decode(content)
 
 -- utils.table_print(lua_table)
-
 
 -- from the json file
 -- "creationDate":"2018-02-09T15:31:00-05:00",

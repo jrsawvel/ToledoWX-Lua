@@ -106,4 +106,3 @@ local imagedir = config.get_value_for("imagedir")
 
 download_gif("day48prob.gif", imagedir)
 
-

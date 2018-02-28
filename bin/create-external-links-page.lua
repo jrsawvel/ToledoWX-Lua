@@ -12,9 +12,6 @@ page.set_template_variable("basic_page", true);
 
 local html_output = page.get_output("External Links")
 
--- print(html_output)
-
-
 local output_filename =  config.get_value_for("htmldir") .. config.get_value_for("wx_links_output_file")
 
 local o = assert(io.open(output_filename, "w"))
