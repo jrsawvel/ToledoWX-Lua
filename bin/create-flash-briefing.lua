@@ -109,18 +109,19 @@ local function get_mds()
 
     local parsed = feedparser.parse(md_xml)
 
-
     local a_entries = parsed.entries -- rss items
 
     local a_mds = {}
 
-    for i=1,#a_entries do
+    local ctr = 1
 
+    for i=1,#a_entries do
         if regional_md(a_entries[i].summary) then
-            a_mds[i] = a_entries[i].title
-            local a_text = utils.split(a_mds[i], ' ')
+            a_mds[ctr] = a_entries[i].title
+            local a_text = utils.split(a_mds[ctr], ' ')
             if #a_text == 3 then
-                a_mds[i] = "Mesoscale Discussion Number " .. a_text[3]
+                a_mds[ctr] = "Mesoscale Discussion Number " .. a_text[3]
+                ctr = ctr + 1
             end
         end
     end
@@ -130,10 +131,20 @@ end
 
 
 
+local function does_alert_exist (a_alerts, alert)
+    for j=1, #a_alerts do
+       if a_alerts[j] == alert then
+           return true
+       end
+    end
+    return false
+end
+
+
 -- Check for any additional alerts, such as flood warnings, that were missed elsewhere, but 
 --    might be listed in this Atom XML file.
 
-local function get_alerts()
+local function get_alerts(a_zone_alerts)
     local url = config.get_value_for("lucas_county_alerts_xml")
 
     local content = utils.get_web_page(url)
@@ -148,6 +159,8 @@ local function get_alerts()
         return a_alerts
     end
 
+    local already_exists_counter = 0
+
     for i=1,#a_entries do
 
         content = utils.get_web_page(a_entries[i].link)
@@ -156,8 +169,14 @@ local function get_alerts()
             error("Could not retrieve " .. a_entries[i].link .. ".")
         end
 
-        a_alerts[i] = rex.match(content, "<event>(.*)</event>", 1, "s") 
+--        a_alerts[i] = rex.match(content, "<event>(.*)</event>", 1, "s") 
+        local event = rex.match(content, "<event>(.*)</event>", 1, "s") 
 
+        if does_alert_exist(a_zone_alerts, event) == false then
+            a_alerts[i - already_exists_counter] = event
+        else 
+            already_exists_counter = already_exists_counter + 1
+         end
     end
 
     return a_alerts
@@ -386,7 +405,7 @@ local conditions_text, conditions_html = get_conditions()
 local forecast_text, forecast_html = get_forecast()
 
 local a_hazards = get_hazards()
-local a_alerts  = get_alerts()
+local a_alerts  = get_alerts(a_hazards)
 local a_mds     = get_mds()
 
 local important_statements = ""

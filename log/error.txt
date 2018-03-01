@@ -1,0 +1,36 @@
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:43: Failed to download gif file /home/toledoweatherlua/root/images/validmd.png.
+stack traceback:
+	[C]: in function 'error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:43: in function 'download_gif'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:61: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:47: attempt to index a nil value (global 'http')
+stack traceback:
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:47: in upvalue 'download_gif'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:71: in upvalue 'create_mesoscale_file'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:141: in upvalue 'process_md_item'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:159: in local 'get_mesoscale_info'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:442: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:47: attempt to index a nil value (global 'http')
+stack traceback:
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:47: in upvalue 'download_gif'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:71: in upvalue 'create_mesoscale_file'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:141: in upvalue 'process_md_item'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:159: in local 'get_mesoscale_info'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:442: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:47: attempt to index a nil value (global 'http')
+stack traceback:
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:47: in upvalue 'download_gif'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:71: in upvalue 'create_mesoscale_file'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:141: in upvalue 'process_md_item'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:159: in local 'get_mesoscale_info'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:442: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:136: attempt to concatenate a nil value (field 'alert')
+stack traceback:
+	...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:136: in upvalue 'does_alert_exist'
+	...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:177: in local 'get_alerts'
+	...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:410: in main chunk
+	[C]: in ?

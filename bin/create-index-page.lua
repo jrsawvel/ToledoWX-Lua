@@ -1,6 +1,8 @@
 #!/usr/local/bin/lua
 
 
+local ltn12 = require "ltn12"
+local http  = require "socket.http"
 local io          = require "io"
 local cjson       = require "cjson"
 local rex         = require "rex_pcre"
@@ -182,8 +184,7 @@ end
 --    might be listed in this Atom XML file.
 
 local function get_lc_alerts(a_zone_alerts)
-    local https = require("ssl.https") 
-    local body,c,l,h = https.request(config.get_value_for("lucas_county_alerts_xml"))
+    local body,c,l,h = utils.get_web_page(config.get_value_for("lucas_county_alerts_xml"))
     local parsed = feedparser.parse(body)
 
     local a_entries = parsed.entries -- atom items
@@ -205,7 +206,7 @@ local function get_lc_alerts(a_zone_alerts)
 --            statement = string.sub(a_entries[i].title, 1, 20)
 --        end
 
-        body,c,l,h = https.request(a_entries[i].link)
+        body,c,l,h = utils.get_web_page(a_entries[i].link)
     
         if body == nil then
             error("Could not retrieve " .. a_entries[i].link .. ".")
