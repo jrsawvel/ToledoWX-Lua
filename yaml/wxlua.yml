@@ -9,7 +9,7 @@
     cssurl:                           http://toledoweatherlua.soupmode.com/css/wx.css
     imagedir:                         /home/toledoweatherlua/root/images/
     htmldir:                          /home/toledoweatherlua/root/
-    errors_file:                      /home/toledoweatherlua/ToledoWXLua/log/error.txt
+    errors_file:                      /home/toledoweatherlua/log/error.txt
     template_home:                    /home/toledoweatherlua/ToledoWXLua/tmpl
     site_name:                        Toledo Weather Lua
     lucas_county_zone_json:           https://forecast.weather.gov/MapClick.php?lat=41.5924&lon=-83.8084&unit=0&lg=english&FcstType=json
@@ -54,7 +54,7 @@
     alexa_flash_briefing_html:        briefing.html
     alexa_flash_briefing_json:        briefing.json
     spcmesoscalegifhome:              http://www.spc.noaa.gov/products/md
-    darksky_api_key:                  api-key
+    darksky_api_key:                  <api-key>
     toledo_latitude:                  41.665556
     toledo_longitude:                 -83.575278
     sylvania_forecastio_latitude:     41.711389
