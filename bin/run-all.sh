@@ -1,7 +1,7 @@
 #!/bin/bash
 
 bindir=/home/toledoweatherlua/ToledoWXLua/bin
-errfile=/home/toledoweatherlua/ToledoWXLua/log/error.txt
+errfile=/home/toledoweatherlua/log/error.txt
 
 echo marine forecast
 $bindir/get-marine-forecast.lua           2>> $errfile
