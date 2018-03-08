@@ -1,0 +1,79 @@
+{{> header}}
+<strong>Toledo Area Forecast Summaries</strong>
+<br />  
+<small>(using <a href="https://darksky.net/forecast/{{{toledo_latitude}}},{{{toledo_longitude}}}">Dark Sky</a> <a href="https://darksky.net/dev">data</a>)</small>
+<p>
+<strong>Now:</strong> {{{currently_summary}}} {{{currently_temperature}}} F.
+ Feels like {{{currently_apparent_temperature}}}.
+ {{{currently_winds}}}
+</p>
+<p>
+<strong>Next 24 Hours:</strong> {{{hourly_summary}}}
+</p>
+<p>
+<strong>Next 7 Days:</strong> {{{daily_summary}}}
+</p>
+
+<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{{toledo_latitude}}}&lon={{{toledo_longitude}}}&name=Toledo"> </iframe>
+
+<div data-role="collapsible-set" data-inset="false">
+
+<p>
+<strong>Minute by Minute Forecasts</strong>
+</p>
+
+
+<div data-role="collapsible">
+<h3>Sylvania: <small>{{{sylvania_minutely_summary}}}</small></h3>
+<div style="font-size:90%; font-weight:bold;">
+<p>
+<strong>Next Hour:</strong> {{{sylvania_minutely_summary}}}
+</p>
+{{#sylvania_minutely_loop}}
+<strong>{{{time}}}</strong>
+<span style="color: {{{precipColor}}}">
+{{#precipChance}}
+ {{{precipProbability}}} % chance of 
+ {{{precipIntensity}}}
+ {{{precipType}}}
+</span>
+{{/precipChance}}
+{{#noPrecipChance}}
+<span style="color: #888888;">
+ {{{precipProbability}}} % chance of precip
+</span>
+{{/noPrecipChance}}
+<br />
+{{/sylvania_minutely_loop}}
+</div>
+</div>
+
+
+<div data-role="collapsible">
+<h3>Central Toledo: <small>{{{toledo_minutely_summary}}}</small></h3>
+<div style="font-size:90%; font-weight:bold;">
+<p>
+<strong>Next Hour:</strong> {{{toledo_minutely_summary}}}
+</p>
+{{#toledo_minutely_loop}}
+<strong>{{{time}}}</strong>
+<span style="color: {{{precipColor}}}">
+{{#precipChance}}
+ {{{precipProbability}}} % chance of 
+ {{{precipIntensity}}}
+ {{{precipType}}}
+</span>
+{{/precipChance}}
+{{#noPrecipChance}}
+<span style="color: #888888;">
+ {{{precipProbability}}} % chance of precip
+</span>
+{{/noPrecipChance}}
+<br />
+{{/toledo_minutely_loop}}
+</div>
+</div>
+
+</div>
+
+{{> footer}}

@@ -34,3 +34,78 @@ stack traceback:
 	...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:177: in local 'get_alerts'
 	...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:410: in main chunk
 	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:19: bad argument #1 to 'decode' (string expected, got nil)
+stack traceback:
+	[C]: in function 'cjson.decode'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:19: in function 'read_json_zone_file'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:120: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:43: Failed to download gif file /home/toledoweatherlua/root/images/validmd.png.
+stack traceback:
+	[C]: in function 'std.normalize.error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:43: in function 'download_gif'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-spc-images.lua:61: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-forecast.lua:22: Expected value but found T_END at character 1
+stack traceback:
+	[C]: in function 'cjson.decode'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-forecast.lua:22: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:19: Expected value but found T_END at character 1
+stack traceback:
+	[C]: in function 'cjson.decode'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:19: in function 'read_json_zone_file'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-conditions.lua:117: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:318: Expected value but found T_END at character 1
+stack traceback:
+	[C]: in function 'cjson.decode'
+	...e/toledoweatherlua/ToledoWXLua/bin/create-index-page.lua:318: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:385: Expected value but found T_END at character 1
+stack traceback:
+	[C]: in function 'cjson.decode'
+	...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:385: in function 'get_conditions'
+	...ledoweatherlua/ToledoWXLua/bin/create-flash-briefing.lua:403: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-co-outlooks.lua:74: File not downloaded - HTTP/1.1 500 Internal Server Error
+stack traceback:
+	[C]: in function 'error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-co-outlooks.lua:74: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...toledoweatherlua/ToledoWXLua/bin/get-outlook-day-4-8.lua:44: Failed to download gif file.
+stack traceback:
+	[C]: in function 'error'
+	...toledoweatherlua/ToledoWXLua/bin/get-outlook-day-4-8.lua:44: in function 'download_gif'
+	...toledoweatherlua/ToledoWXLua/bin/get-outlook-day-4-8.lua:107: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-co-outlooks.lua:55: Unable to parse HTML file for day1outlookhtml.
+
+stack traceback:
+	[C]: in function 'std.normalize.error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-co-outlooks.lua:55: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: ...toledoweatherlua/ToledoWXLua/bin/get-outlook-day-4-8.lua:44: Failed to download gif file.
+stack traceback:
+	[C]: in function 'error'
+	...toledoweatherlua/ToledoWXLua/bin/get-outlook-day-4-8.lua:44: in function 'download_gif'
+	...toledoweatherlua/ToledoWXLua/bin/get-outlook-day-4-8.lua:107: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:46: Failed to download gif file.
+stack traceback:
+	[C]: in function 'error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:46: in function 'download_gif'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:107: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:46: Failed to download gif file.
+stack traceback:
+	[C]: in function 'error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:46: in function 'download_gif'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:100: in main chunk
+	[C]: in ?
+/usr/local/bin/lua: /home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:46: Failed to download gif file.
+stack traceback:
+	[C]: in function 'std.normalize.error'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:46: in function 'download_gif'
+	/home/toledoweatherlua/ToledoWXLua/bin/get-outlook-gifs.lua:108: in main chunk
+	[C]: in ?

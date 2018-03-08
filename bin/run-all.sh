@@ -39,5 +39,7 @@ echo spc images
 $bindir/get-spc-images.lua                2>> $errfile
 echo outlook gifs
 $bindir/get-outlook-gifs.lua              2>> $errfile
+echo dark sky info
+$bindir/get-darksky-info.lua              2>> $errfile
 echo error page
 $bindir/create-error-page.lua             2>> $errfile
