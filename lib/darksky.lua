@@ -10,7 +10,7 @@ local cjson = require "cjson"
 
 local mt = {}
 
-local API_ENDPOINT = "https://api.forecast.io/forecast/"
+local API_ENDPOINT = "https://api.darksky.net/forecast/"
 
  
 local new = function(api_key, latitude, longitude)

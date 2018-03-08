@@ -1,0 +1,61 @@
+
+.wx-alert {color: darkred;}
+.wx-alert a {color: darkred;}
+.wx-alert a:visited {color: darkred;}
+.wx-alert a:hover {color: darkred;}
+
+.wx-darksky {color: darkgreen;}
+.wx-darksky a {color: darkgreen;}
+.wx-darksky a:visited {color: darkgreen;}
+.wx-darksky a:hover {color: darkgreen;}
+
+.wx-minor-text {color: gray; font-size: 90%;}
+
+.ui-bar-b { 
+    background-color: yellow; 
+}
+
+img {
+    max-width: 100%;
+}
+
+#wx-content {
+   line-height: 1.6em;
+/*   font-size: 110%; */
+   font-size: 1.1em; 
+   color: #444;
+}
+
+#wx-content strong {
+    color: #000000;
+}
+
+#footer {
+}
+
+@media only screen and (min-width: 769px) {
+  .ui-page {
+      width: 40em !important;
+      margin: 0 auto !important;
+      position: relative !important; 
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+    #wx-content {
+        color: #444;
+    }
+}
+
+@media only screen and (max-width: 320px) { 
+    .scroll_text {
+/*        position: absolute; 
+*/
+/*
+        height: 700px;
+        width: 100%;
+        overflow-y: auto; 
+        -webkit-overflow-scrolling: touch;
+*/
+    }
+}

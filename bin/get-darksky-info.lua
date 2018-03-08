@@ -94,8 +94,8 @@ page.set_template_variable("daily_summary", wx.daily.summary)
 
 -- Sylvania location
 
-latitude  = config.get_value_for("sylvania_forecastio_latitude")
-longitude = config.get_value_for("sylvania_forecastio_longitude")
+latitude  = config.get_value_for("sylvania_darksky_latitude")
+longitude = config.get_value_for("sylvania_darksky_longitude")
 
 local sylvania = darksky(api_key, latitude, longitude)
 local src, swx = sylvania:fetch_data()
@@ -140,7 +140,7 @@ page.set_template_variable("sylvania_minutely_loop", sylvania_minutely_loop)
 
 local html_output = page.get_output("Dark Sky Data")
 
-local output_filename =  config.get_value_for("htmldir") .. config.get_value_for("wx_forecastio_output_file")
+local output_filename =  config.get_value_for("htmldir") .. config.get_value_for("wx_darksky_output_file")
 local o = assert(io.open(output_filename, "w"))
 o:write(html_output)
 o:close()
