@@ -19,6 +19,31 @@ local utils    = require "utils"
 local wxutils  = require "wxutils"
 
 
+-- global for this script
+local B_ISDST = false
+local S_TZ = "est"
+local global_dt = os.date("*t", os.time())
+if global_dt.isdst then
+    B_ISDST = true    
+    S_TZ = "edt"
+end
+-- forget the above code. isdst is always false, regardless of the time of the year.
+-- i think that it's because this server is not using local time, such as Pacific time, 
+-- like my he.net servers use. the digital ocean server uses UTC, which is fine, but
+-- no dayling savings time info exists, i think. i've always hated dealing with dates and times,
+-- especially the moronic time changes. i've struggled to find info about this. for now,
+-- i'm using this hack for 2018.
+-- switch to frigging dst in the u.s. occurs on Mar 11, 2018, day 70
+-- switch back to the frigging est occurs on Nov 4, 2018, day 238
+-- i'm not accounting for time zone diffs and the fact that the time changes occur at 2:00 a.m. local time.
+-- stupid shite.
+-- this would make the change a few hours ahead the actual.
+if global_dt.yday > 69 and global_dt.yday < 238 then
+    B_ISDST = true    
+    S_TZ = "edt"
+end
+
+
 
 -- attn...wfo...
 -- if (  $mddesc =~ m/CLE/s   or  $mddesc =~ m/DTX/s  or  $mddesc =~ m/IWX/s  ) {
@@ -110,7 +135,7 @@ local function process_md_item(h_item)
         content = utils.trim_spaces(content)
         content = string.lower(content)
 
-        local one, two = rex.match(content, "^([0-9]* [a-z]*) est(.*)$", 1, "m")
+        local one, two = rex.match(content, "^([0-9]* [a-z]*) " .. S_TZ .. "(.*)$", 1, "m")
         if utils.is_empty(one) == false then
             mdtime = one
             mdtime = wxutils.reformat_nws_text_time(mdtime)
@@ -273,7 +298,7 @@ if discussion_text == nil  then
     error("Could not retrieve " .. discussion_url .. ".")
 end
 discussion_text = string.lower(discussion_text)
-local discussion_time, tmp_discussion_text = rex.match(discussion_text, "^(.*)est(.*)$", 1, "m")
+local discussion_time, tmp_discussion_text = rex.match(discussion_text, "^(.*)" .. S_TZ .. "(.*)$", 1, "m")
 if utils.is_empty(discussion_time) == false then
     discussion_time = wxutils.reformat_nws_text_time(discussion_time)
 else
@@ -288,7 +313,7 @@ if marine_text == nil  then
     error("Could not retrieve " .. marine_url .. ".")
 end
 marine_text = string.lower(marine_text)
-local marine_time, tmp_marine_text = rex.match(marine_text, "^(.*)est(.*)$", 1, "m")
+local marine_time, tmp_marine_text = rex.match(marine_text, "^(.*)" .. S_TZ .. "(.*)$", 1, "m")
 if utils.is_empty(marine_time) == false then
     marine_time = wxutils.reformat_nws_text_time(marine_time)
 else
@@ -303,7 +328,7 @@ if haz_text == nil  then
     error("Could not retrieve " .. haz_url .. ".")
 end
 haz_text = string.lower(haz_text)
-local haz_time, tmp_haz_text = rex.match(haz_text, "^(.*)est(.*)$", 1, "m")
+local haz_time, tmp_haz_text = rex.match(haz_text, "^(.*)" .. S_TZ .. "(.*)$", 1, "m")
 if utils.is_empty(haz_time) == false then
     haz_time = wxutils.reformat_nws_text_time(haz_time)
 else
@@ -390,7 +415,7 @@ for k,v in pairs(h_alerts) do
     local alert_time, alert_date -- won't use alert_date for now. maybe for a custom alerts.json file
 
     if msg ~= nil then
-        alert_time, alert_date = rex.match(msg, "^(.*)est(.*)$", 1, "m")
+        alert_time, alert_date = rex.match(msg, "^(.*)" .. S_TZ .. "(.*)$", 1, "m")
         if utils.is_empty(alert_time) == false then
             alert_time = wxutils.reformat_nws_text_time(alert_time)
         end
