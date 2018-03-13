@@ -3,26 +3,69 @@
 <br />  
 <small>(using <a href="https://darksky.net/forecast/{{{toledo_latitude}}},{{{toledo_longitude}}}">Dark Sky</a> JSON <a href="https://darksky.net/dev">data</a>)</small>
 <p>
+{{{currently_date_time}}}<br />
 <strong>Now:</strong> {{{currently_summary}}} {{{currently_temperature}}} F.
- Feels like {{{currently_apparent_temperature}}}.
+ {{#use_apparent_temperature}}
+   Feels like {{{currently_apparent_temperature}}}.
+ {{/use_apparent_temperature}}
  {{{currently_winds}}}
 </p>
 <p>
 <strong>Next 24 Hours:</strong> {{{hourly_summary}}}
 </p>
-<p>
-<strong>Next 7 Days:</strong> {{{daily_summary}}}
-</p>
 
-<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{{toledo_latitude}}}&lon={{{toledo_longitude}}}&name=Toledo"> </iframe>
+<p>
+<strong>Alerts:</strong>
+{{#no_alerts}}
+ No alerts exist at this time for this location.
+{{/no_alerts}}
+{{#have_alerts}}
+{{#alerts_loop}}
+<blockquote>
+<strong>{{{title}}}</strong><br />
+{{{description}}}<br />
+<strong>Start:</strong> {{{startTime}}}<br />
+<strong>End:</strong> {{{endTime}}}<br />
+<a href="{{{url}}}">More info</a>
+</blockquote>
+{{/alerts_loop}}
+{{/have_alerts}}
+
 
 <div data-role="collapsible-set" data-inset="false">
+
+<br />
+
+<p>
+<strong>Next 7 Days</strong>
+</p>
+<div data-role="collapsible">
+<h4>{{{daily_summary}}}</h4>
+<p>{{{daily_summary}}}</p>
+{{#daily_loop}}
+<p>
+ <strong>{{{date}}}</strong> - 
+ {{{summary}}}
+ Cloud cover: {{{cloudCoverDesc}}}.
+ Precip type: {{{precipType}}}.
+ Snow accumulation: {{{snowAccumulation}}} inches.
+ Low temp {{{lowTemp}}} at 
+ {{{lowTempTime}}}.
+ High temp {{{highTemp}}} at
+ {{{highTempTime}}}.
+ Wind: {{{windDirection}}} at {{{windSpeed}}} mph.
+ Sunrise: {{{sunriseTime}}}.
+ Sunset: {{{sunsetTime}}}.
+</p>
+{{/daily_loop}}
+</div>
+
+
+<br />
 
 <p>
 <strong>Minute by Minute Forecasts</strong>
 </p>
-
-
 <div data-role="collapsible">
 <h3>Sylvania: <small>{{{sylvania_minutely_summary}}}</small></h3>
 <div style="font-size:90%; font-weight:bold;">
@@ -74,6 +117,14 @@
 </div>
 </div>
 
+</div>
+
+
+<div style="margin-top: 40px; background: #ccFFFF;">
+<p>
+Info displayed below comes from using the iframe tag to <a href="https://forecast.io/embed/#lat=41.665556&lon=-83.575278&name=Toledo">embed</a> a Dark Sky widget.
+</p>
+<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{{toledo_latitude}}}&lon={{{toledo_longitude}}}&name=Toledo"> </iframe>
 </div>
 
 {{> footer}}

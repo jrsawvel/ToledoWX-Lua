@@ -47,6 +47,10 @@ local fetch_dark_sky_data = function(self, dt)
         return false, status
     end
 
+    if string.find(headers["content-type"], "application/json") == nil then
+        return false, status .. " - but content-type was not application/json"
+    end
+
     self.data = cjson.decode(body)
 
     return true, self.data
