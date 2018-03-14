@@ -2,45 +2,76 @@
 <strong>Toledo Area Forecast Summaries</strong>
 <br />  
 <small>(using <a href="https://darksky.net/forecast/{{{toledo_latitude}}},{{{toledo_longitude}}}">Dark Sky</a> JSON <a href="https://darksky.net/dev">data</a>)</small>
+
 <p>
 {{{currently_date_time}}}<br />
-<strong>Now:</strong> {{{currently_summary}}} {{{currently_temperature}}} F.
+</p>
+
+
+
+<div data-role="collapsible-set" data-inset="false">
+
+<div data-role="collapsible">
+
+<h3>Now: <small>{{{currently_summary}}} {{{currently_temperature}}} F.
  {{#use_apparent_temperature}}
    Feels like {{{currently_apparent_temperature}}}.
  {{/use_apparent_temperature}}
- {{{currently_winds}}}
+ {{{currently_winds}}}</small></h3>
+<p>
+Date and Time: {{{currently_date_time}}}<br />
+Summary: {{{currently_summary}}}<br />
+Air Temp: {{{currently_temperature}}} F<br />
+Dew Point: {{{currently_dewpoint}}} F<br />
+Humidity: {{{currently_humidity}}} %<br />
+Wind Direction: {{{currently_wind_direction_fullname}}}<br />
+Wind Speed: {{{currently_wind_speed}}} mph<br /> 
+Wind Gust: {{{currently_wind_gust}}} mph<br />
+Apparent Air Temp: {{{currently_apparent_temperature}}} F<br />
+Pressure: {{{currently_pressure}}} inches<br />
+UV Index: <span style="color: {{{currently_uvindex_color}}}">{{{currently_uvindex_rating}}}</span> : {{{currently_uvindex}}}<br />
+Cloud Cover: {{{currently_cloud_cover}}} % : {{{currently_cloud_cover_description}}}<br />
+Precip Probability: {{{currently_precip_probability}}} %<br />
+Precip Intensity: {{{currently_precip_intensity}}} : <span style="color: {{{currently_precip_color}}}">{{{currently_precip_description}}}</span><br />
+Precip Type: {{{currently_precip_type}}}<br />
+Visibility: {{{currently_visibility}}} miles<br />
+Nearest Precip Distance: {{{currently_nearest_precip_distance}}}<br />
+Nearest Precip Bearing: {{{currently_nearest_precip_bearing}}}
 </p>
+</div>
+</div>
+
+
+
 <p>
 <strong>Next 24 Hours:</strong> {{{hourly_summary}}}
 </p>
 
-<p>
-<strong>Alerts:</strong>
+
+
+<div data-role="collapsible-set" data-inset="false">
+
+<div data-role="collapsible">
 {{#no_alerts}}
- No alerts exist at this time for this location.
+<h3>No alerts exist.</h3>
 {{/no_alerts}}
 {{#have_alerts}}
+<h3 class="wx-alert">Alert(s) exist.</h3>
 {{#alerts_loop}}
-<blockquote>
+<p>
 <strong>{{{title}}}</strong><br />
 {{{description}}}<br />
 <strong>Start:</strong> {{{startTime}}}<br />
 <strong>End:</strong> {{{endTime}}}<br />
 <a href="{{{url}}}">More info</a>
-</blockquote>
+</p>
 {{/alerts_loop}}
 {{/have_alerts}}
+</div>
 
 
-<div data-role="collapsible-set" data-inset="false">
-
-<br />
-
-<p>
-<strong>Next 7 Days</strong>
-</p>
 <div data-role="collapsible">
-<h4>{{{daily_summary}}}</h4>
+<h3>Next 7 Days: <small>{{{daily_summary}}}</small></h3>
 <p>{{{daily_summary}}}</p>
 {{#daily_loop}}
 <p>
@@ -60,8 +91,6 @@
 {{/daily_loop}}
 </div>
 
-
-<br />
 
 <p>
 <strong>Minute by Minute Forecasts</strong>

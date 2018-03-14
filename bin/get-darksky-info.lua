@@ -64,17 +64,24 @@ for i=1, #minutely do
 end
 
 
+
+
+local currently = wx.currently
+
 local currently_winds_str
+local wind_direction, wind_gust, wind_direction_fullname
 
-local wind_speed = dsutils.round(wx.currently.windSpeed)
+local wind_speed = dsutils.round(currently.windSpeed)
 
-if wind_speed == 0 or wx.currently.windBearing == nil then
+if wind_speed == 0 or currently.windBearing == nil then
     currently_winds_str = "Calm wind"
 else 
-    wind_direction =  dsutils.degrees_to_cardinal(wx.currently.windBearing)
-    wind_gust = dsutils.round(wx.currently.windGust)
+    wind_direction =  dsutils.degrees_to_cardinal(currently.windBearing)
+    wind_direction_fullname =  dsutils.degrees_to_cardinal_fullname(currently.windBearing)
+    wind_gust = dsutils.round(currently.windGust)
     currently_winds_str = wind_direction .. " at " .. wind_speed .. " mph. Gust " .. wind_gust .. " mph."
 end
+
 
 page.set_template_name("darksky")
 page.set_template_variable("basic_page", false)
@@ -86,17 +93,45 @@ page.set_template_variable("toledo_minutely_summary", wx.minutely.summary)
 page.set_template_variable("toledo_minutely_loop", toledo_minutely_loop)
 
 page.set_template_variable("currently_summary", wx.currently.summary)
-page.set_template_variable("currently_temperature", dsutils.round(wx.currently.temperature))
+page.set_template_variable("currently_temperature", dsutils.round(currently.temperature))
 
-if dsutils.round(wx.currently.apparentTemperature) ~=  dsutils.round(wx.currently.temperature) then
+if dsutils.round(currently.apparentTemperature) ~=  dsutils.round(currently.temperature) then
     page.set_template_variable("use_apparent_temperature", true)
-    page.set_template_variable("currently_apparent_temperature", dsutils.round(wx.currently.apparentTemperature))
+    page.set_template_variable("currently_apparent_temperature", dsutils.round(currently.apparentTemperature))
 end
 
 page.set_template_variable("currently_winds", currently_winds_str)
 page.set_template_variable("hourly_summary", wx.hourly.summary)
 page.set_template_variable("daily_summary", wx.daily.summary)
-page.set_template_variable("currently_date_time", os.date("%I:%M %p, %a, %b %d, %Y ", wx.currently.time + (wx.offset * 3600)))
+page.set_template_variable("currently_date_time", os.date("%I:%M %p, %a, %b %d, %Y ", currently.time + (wx.offset * 3600)))
+
+page.set_template_variable("currently_dewpoint", dsutils.round(currently.dewPoint))
+page.set_template_variable("currently_humidity", dsutils.round(currently.humidity * 100))
+page.set_template_variable("currently_wind_direction_fullname", wind_direction_fullname)
+page.set_template_variable("currently_wind_speed", wind_speed)
+page.set_template_variable("currently_wind_gust", wind_gust)
+page.set_template_variable("currently_pressure", dsutils.millibars_to_inches(currently.pressure))
+page.set_template_variable("currently_uvindex", currently.uvIndex)
+local uvindex_rating, uvindex_color = dsutils.get_uvindex_info(currently.uvIndex)
+page.set_template_variable("currently_uvindex_color", uvindex_color)
+page.set_template_variable("currently_uvindex_rating", uvindex_rating)
+page.set_template_variable("currently_cloud_cover", dsutils.round(currently.cloudCover * 100)) 
+page.set_template_variable("currently_cloud_cover_description", dsutils.cloud_cover_description(currently.cloudCover))
+page.set_template_variable("currently_precip_probability", dsutils.round(currently.precipProbability * 100))
+page.set_template_variable("currently_precip_intensity", currently.precipIntensity)
+local precip_desc, precip_color = dsutils.calc_precip_intensity_and_color(currently.precipIntensity)
+page.set_template_variable("currently_precip_color", precip_color)
+page.set_template_variable("currently_precip_description", precip_desc)
+if currently.precipIntensity > 0.0 then
+    page.set_template_variable("currently_precip_type", currently.precipType)
+end
+page.set_template_variable("currently_visibility", currently.visibility) 
+if currently.nearestStormDistance < 1.0 then
+    page.set_template_variable("currently_nearest_precip_distance", "Precip is occurring over or near this location.")
+else 
+    page.set_template_variable("currently_nearest_precip_distance", dsutils.round(currently.nearestStormDistance) .. " miles")
+    page.set_template_variable("currently_nearest_precip_bearing", dsutils.degrees_to_cardinal_fullname(currently.nearestStormBearing)) 
+end
 
 
 
