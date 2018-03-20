@@ -216,7 +216,8 @@ end
 local daily = wx.daily.data
 local daily_loop = {}
 
-for i=1, #daily do
+-- for i=1, #daily do
+for i=1, 7 do
     local hash = {}
     local d = daily[i]
 

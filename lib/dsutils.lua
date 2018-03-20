@@ -40,6 +40,9 @@ end
 
 
 function M.round (x)
+    if x == nil then
+        return 0
+    end
     local f = math.floor(x)
     if (x == f) or (x % 2.0 == 0.5) then
         return f
