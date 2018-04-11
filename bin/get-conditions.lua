@@ -16,6 +16,15 @@ local wxutils  = require "wxutils"
 
 function read_json_zone_file(url)
     local content, code, headers, status = utils.get_web_page(url)
+
+    if content == nil then
+        return nil
+    end
+
+    if string.find(headers["content-type"], "application/json") == nil then
+        return nil
+    end 
+ 
     local lua_table = cjson.decode(content)
 
     return parse_json_table(lua_table)
@@ -123,9 +132,19 @@ local suburban_loop = read_json_zone_file(config.get_value_for("toledo_suburban_
 
 
 page.set_template_name("conditions");
-page.set_template_variable("express_loop" ,express_loop);
-page.set_template_variable("executive_loop" ,executive_loop);
-page.set_template_variable("suburban_loop" ,suburban_loop);
+
+if express_loop ~= nil then
+    page.set_template_variable("express_loop" ,express_loop);
+end
+
+if executive_loop ~= nil then
+    page.set_template_variable("executive_loop" ,executive_loop);
+end
+
+if suburban_loop ~= nil then
+    page.set_template_variable("suburban_loop" ,suburban_loop);
+end
+
 page.set_template_variable("basic_page", true);
 
 local html_output = page.get_output("Airport Conditions")
