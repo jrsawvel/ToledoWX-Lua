@@ -247,6 +247,17 @@ for i=1, 7 do
     hash.highTempTime        =   os.date("%I:%M %p", d.temperatureHighTime + (wx.offset * 3600))
     hash.windSpeed           =   ws
     hash.windDirection       =   wdf
+    hash.moonPhase           =   d.moonPhase
+    hash.moonPhaseDesc       =   dsutils.get_moon_phase_description(d.moonPhase)
+    hash.dewPoint            =   dsutils.round(d.dewPoint)
+    hash.humidity            =   dsutils.round(d.humidity * 100)
+    hash.apparentTemperatureHigh = dsutils.round(d.apparentTemperatureHigh)
+    hash.precipProbability   =   dsutils.round(d.precipProbability * 100) 
+
+    hash.useSnowAccumulation = true
+    if hash.lowTemp > 50 then
+        hash.useSnowAccumulation = false
+    end
 
     daily_loop[i] = hash
 end

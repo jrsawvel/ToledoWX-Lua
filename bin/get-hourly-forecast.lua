@@ -63,13 +63,17 @@ for p=1, #periods do
         hash.temperature     = t_temperature[i] 
         hash.winddirection   = t_winddirectioncardinal[i] 
         hash.windspeed       = t_windspeed[i] 
-        hash.windchill       = t_windchill[i]
+--        hash.windchill       = t_windchill[i]
         hash.precipchance    = t_pop[i]
         hash.cloudamount     = t_cloudamount[i]
 
         hash.windchillexists = false
-        if ( hash.windchill ~= nil and utils.is_numeric(hash.windchill) ) then
-            hash.windchillexists = true
+--        if ( hash.windchill ~= nil and utils.is_numeric(hash.windchill) ) then
+        if t_windchill ~= nil then
+            if t_windchill[i] ~= nil and utils.is_numeric(t_windchill[i]) then
+                hash.windchill = t_windchill[i]
+                hash.windchillexists = true
+            end
         end
 
         loop[i] = hash
