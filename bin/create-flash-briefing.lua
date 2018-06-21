@@ -104,7 +104,8 @@ local function get_mds()
     local url = config.get_value_for("spc_md_xml")
 --    url = "http://www.spc.noaa.gov/products/spcmdrss.xml"
 
-    local md_xml = utils.get_unsecure_web_page(url)
+    -- local md_xml = utils.get_unsecure_web_page(url)
+    local md_xml = utils.get_web_page(url)
 
     local parsed = feedparser.parse(md_xml)
 

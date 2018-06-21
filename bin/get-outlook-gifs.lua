@@ -6,11 +6,13 @@ local http  = require "socket.http"
 local ltn12 = require "ltn12"
 local io    = require "io"
 
+
 package.path = package.path .. ';/home/toledoweatherlua/ToledoWXLua/lib/?.lua'
 
 -- my modules
 local config = require "config"
 local page   = require "page"
+local utils  = require "utils"
 
 
 function download_gif(gif_file)
@@ -27,6 +29,8 @@ function download_gif(gif_file)
 
     local bincontent = {}
 
+
+--[[
     local num, status_code, headers, status_string = http.request {
         method = "GET",
         url = spc_gif_url,
@@ -36,9 +40,14 @@ function download_gif(gif_file)
         },
         sink = ltn12.sink.table(bincontent)   
     }
+]]
+
+    local status_code, headers, status_string
+
+    bincontent, status_code, headers, status_string = utils.get_web_page(spc_gif_url)
 
     if ( status_code == 200 ) then
-        bincontent = table.concat(bincontent)
+--        bincontent = table.concat(bincontent)
         local o = assert(io.open(dayfilename, "wb"))
         o:write(bincontent)
         o:close()
@@ -70,6 +79,8 @@ for ctr=1, 3 do
 
     local content = {}
 
+
+--[[
     local num, status_code, headers, status_string = http.request {
         method = "GET",
         url = dayurl,
@@ -79,10 +90,15 @@ for ctr=1, 3 do
         },
         sink = ltn12.sink.table(content)
     }
+]]
+
+    local status_code, headers, status_string
+
+    content, status_code, headers, status_string = utils.get_web_page(dayurl)
 
     if ( status_code == 200 ) then
         -- get body as string by concatenating table filled by sink
-        content = table.concat(content)
+        -- content = table.concat(content)
 
         local time_gif
         local gif_file

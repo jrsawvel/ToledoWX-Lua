@@ -21,19 +21,19 @@
     forecast_discussion:              https://forecast.weather.gov/product.php?site=CRH&issuedby=CLE&product=AFD&format=txt&version=1&glossary=0
     det_forecast_discussion:          https://forecast.weather.gov/product.php?site=CRH&issuedby=DTX&product=AFD&format=txt&version=1&glossary=0
     nind_forecast_discussion:         https://forecast.weather.gov/product.php?site=CRH&issuedby=IWX&product=AFD&format=txt&version=1&glossary=0
-    spcoutlookgifhome:                http://www.spc.noaa.gov/products/outlook
-    day1outlookgif:                   http://www.spc.noaa.gov/products/outlook/day1otlk_2000.gif
-    day2outlookgif:                   http://www.spc.noaa.gov/products/outlook/day2otlk_1730.gif
-    day3outlookgif:                   http://www.spc.noaa.gov/products/outlook/day3otlk_0730.gif
-    day48outlookgif:                  http://www.spc.noaa.gov/products/exper/day4-8/day48prob.gif
-    day1outlookhtml:                  http://www.spc.noaa.gov/products/outlook/day1otlk.html
-    day2outlookhtml:                  http://www.spc.noaa.gov/products/outlook/day2otlk.html
-    day3outlookhtml:                  http://www.spc.noaa.gov/products/outlook/day3otlk.html
-    day48outlookhtml:                 http://www.spc.noaa.gov/products/exper/day4-8/index.html 
-    spc_md_image_url:                 http://www.spc.noaa.gov/products/md/validmd.png
-    spc_watch_box_image_url:          http://www.spc.noaa.gov/products/watch/validww.png
+    spcoutlookgifhome:                https://www.spc.noaa.gov/products/outlook
+    day1outlookgif:                   https://www.spc.noaa.gov/products/outlook/day1otlk_2000.gif
+    day2outlookgif:                   https://www.spc.noaa.gov/products/outlook/day2otlk_1730.gif
+    day3outlookgif:                   https://www.spc.noaa.gov/products/outlook/day3otlk_0730.gif
+    day48outlookgif:                  https://www.spc.noaa.gov/products/exper/day4-8/day48prob.gif
+    day1outlookhtml:                  https://www.spc.noaa.gov/products/outlook/day1otlk.html
+    day2outlookhtml:                  https://www.spc.noaa.gov/products/outlook/day2otlk.html
+    day3outlookhtml:                  https://www.spc.noaa.gov/products/outlook/day3otlk.html
+    day48outlookhtml:                 https://www.spc.noaa.gov/products/exper/day4-8/index.html 
+    spc_md_image_url:                 https://www.spc.noaa.gov/products/md/validmd.png
+    spc_watch_box_image_url:          https://www.spc.noaa.gov/products/watch/validww.png
 #    spc_outlook_xml:                  http://www.spc.noaa.gov/products/spcacrss.xml
-    spc_md_xml:                       http://www.spc.noaa.gov/products/spcmdrss.xml
+    spc_md_xml:                       https://www.spc.noaa.gov/products/spcmdrss.xml
     lucas_county_alerts_xml:          https://alerts.weather.gov/cap/wwaatmget.php?x=OHC095&y=0 
     wx_hazardous_output_file:         hazardous-weather-outlook.html
     wx_conditions_output_file:        current-conditions.html
@@ -53,7 +53,7 @@
     wx_darksky_output_file:           darksky.html
     alexa_flash_briefing_html:        briefing.html
     alexa_flash_briefing_json:        briefing.json
-    spcmesoscalegifhome:              http://www.spc.noaa.gov/products/md
+    spcmesoscalegifhome:              https://www.spc.noaa.gov/products/md
     darksky_api_key:                  <api-key>
     toledo_latitude:                  41.665556
     toledo_longitude:                 -83.575278

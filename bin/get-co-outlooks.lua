@@ -34,6 +34,7 @@ for ctr=1, 3 do
 
     local content = {}
 
+--[[
     local num, status_code, headers, status_string = http.request {
         method = "GET",
         url = dayurl,
@@ -43,10 +44,15 @@ for ctr=1, 3 do
         },
         sink = ltn12.sink.table(content)
     }
+]]
+
+    local status_code, headers, status_string
+
+    content, status_code, headers, status_string = utils.get_web_page(dayurl)
 
     if ( status_code == 200 ) then
         -- get body as string by concatenating table filled by sink
-        content = table.concat(content)
+--        content = table.concat(content)
 
         local text;
 

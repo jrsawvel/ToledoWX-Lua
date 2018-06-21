@@ -175,7 +175,8 @@ end
 
 
 local function get_mesoscale_info()
-    local md_xml = utils.get_unsecure_web_page(config.get_value_for("spc_md_xml"))
+    -- local md_xml = utils.get_unsecure_web_page(config.get_value_for("spc_md_xml"))
+    local md_xml = utils.get_web_page(config.get_value_for("spc_md_xml"))
     local parsed = feedparser.parse(md_xml)
 
     local a_entries = parsed.entries -- rss items

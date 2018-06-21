@@ -25,6 +25,7 @@ function download_gif(gif_file, imagedir)
 
     local bincontent = {}
 
+--[[
     local num, status_code, headers, status_string = http.request {
         method = "GET",
         url = spc_gif_url,
@@ -34,9 +35,14 @@ function download_gif(gif_file, imagedir)
         },
         sink = ltn12.sink.table(bincontent)   
     }
+]]
+
+local status_code, headers, status_string
+
+bincontent, status_code, headers, status_string = utils.get_web_page(spc_gif_url)
 
     if ( status_code == 200 ) then
-        bincontent = table.concat(bincontent)
+ --       bincontent = table.concat(bincontent)
         local o = assert(io.open(dayfilename, "wb"))
         o:write(bincontent)
         o:close()
@@ -60,6 +66,7 @@ end
 
 local content = {}
 
+--[[
 local num, status_code, headers, status_string = http.request {
     method = "GET",
     url = dayurl,
@@ -69,11 +76,16 @@ local num, status_code, headers, status_string = http.request {
     },
     sink = ltn12.sink.table(content)   
 }
+]]
+
+local status_code, headers, status_string
+
+content, status_code, headers, status_string = utils.get_web_page(dayurl)
 
 if ( status_code == 200 ) then
 
     -- get body as string by concatenating table filled by sink
-    content = table.concat(content)
+--    content = table.concat(content)
 
     local text;
 
