@@ -71,6 +71,8 @@ local function download_gif(gif_file)
 
     local bincontent = {}
 
+--[[
+--        images are stored at https instead of http - 20jul2018
     local num, status_code, headers, status_string = http.request {
         method = "GET",
         url = spc_gif_url,
@@ -80,14 +82,23 @@ local function download_gif(gif_file)
         },
         sink = ltn12.sink.table(bincontent)   
     }
+]]
 
+    local body, code, headers, status  = utils.get_web_page(spc_gif_url)
+
+--[[
     if ( status_code == 200 ) then
         bincontent = table.concat(bincontent)
         local o = assert(io.open(dayfilename, "wb"))
         o:write(bincontent)
         o:close()
+]]
+    if code == 200 then
+        local o = assert(io.open(dayfilename, "wb"))
+        o:write(body)
+        o:close()
     else 
-        error("Failed to download gif file " .. dayfilename .. ".")
+        error("Failed to download gif file " .. spc_gif_url .. " " .. status .. ".")
     end
 end
 
