@@ -33,17 +33,16 @@ end
 -- no dayling savings time info exists, i think. i've always hated dealing with dates and times,
 -- especially the moronic time changes. i've struggled to find info about this. for now,
 -- i'm using this hack for 2018.
--- switch to frigging dst in the u.s. occurs on Mar 11, 2018, day 70
--- switch back to the frigging est occurs on Nov 4, 2018, day 238
+-- switch to frigging est in the u.s. occurs on Mar 11, 2018, day 70
+-- switch back to the frigging est occurs on Nov 4, 2018, day 308
+-- https://www.epochconverter.com/days/2018
 -- i'm not accounting for time zone diffs and the fact that the time changes occur at 2:00 a.m. local time.
 -- stupid shite.
 -- this would make the change a few hours ahead the actual.
-if global_dt.yday > 69 and global_dt.yday < 238 then
+if global_dt.yday > 69 and global_dt.yday < 308 then
     B_ISDST = true    
     S_TZ = "edt"
 end
-
-
 
 -- attn...wfo...
 -- if (  $mddesc =~ m/CLE/s   or  $mddesc =~ m/DTX/s  or  $mddesc =~ m/IWX/s  ) {
