@@ -11,11 +11,15 @@ local config   = require "config"
 local page     = require "page"
 local utils    = require "utils"
 local wxutils  = require "wxutils"
+local email    = require "email"
 
 -- my Dark Sky API wrapper and related utilities
 local darksky = require "darksky"
 local dsutils = require "dsutils"
 
+
+local prob_hit  = false
+local inten_hit = false
 
 local api_key          = config.get_value_for("darksky_api_key")
 
@@ -54,6 +58,8 @@ for i=1, #minutely do
         hash.precipIntensity, hash.precipColor = dsutils.calc_precip_intensity_and_color(m.precipIntensity)
         hash.precipType = m.precipType
         hash.precipChance = true
+        if hash.precipProbability >= 50 then prob_hit = true end
+        if hash.precipIntensity >= 125 then inten_hit = true end -- mod-hvy and higher
     else
         hash.precipProbability = 0
         hash.noPrecipChance = true
@@ -167,6 +173,8 @@ for i=1, #s_minutely do
         hash.precipIntensity, hash.precipColor = dsutils.calc_precip_intensity_and_color(m.precipIntensity)
         hash.precipType = m.precipType
         hash.precipChance = true
+        if hash.precipProbability >= 50 then prob_hit = true end
+        if hash.precipIntensity >= 125 then inten_hit = true end -- mod-hvy and higher
     else
         hash.precipProbability = 0
         hash.noPrecipChance = true
@@ -272,4 +280,8 @@ local o = assert(io.open(output_filename, "w"))
 o:write(html_output)
 o:close()
 
+
+if prob_hit == true and inten_hit == true then
+    email.send_alert("Mod-Hvy Rain or Worse Nearby", config.get_value_for("wxhome") .. "/" .. config.get_value_for("wx_darksky_output_file"))
+end
 

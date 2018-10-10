@@ -17,6 +17,7 @@ local config   = require "config"
 local page     = require "page"
 local utils    = require "utils"
 local wxutils  = require "wxutils"
+local email    = require "email"
 
 
 -- global for this script
@@ -174,6 +175,10 @@ local function process_md_item(h_item)
         hash.mdnum = mdnum
         hash.mdtime = mdtime
         hash.wxhome = wxhome
+
+        if not io.open(mdhash.mdfilename, "r") then
+            email.send_alert("Mesoscale Discussion " .. mdnum, config.get_value_for("wxhome") .. "/" .. "mesoscale" .. mdnum .. ".html")
+        end
 
         create_mesoscale_file(mdhash)
 
@@ -514,5 +519,19 @@ o:write(html_output)
 o:close()
 
 
-
+if not no_important_hazardous_outlook_exists then 
+    -- in other words if TRUE for the existence of a HWO
+    local hwo_file = config.get_value_for("htmldir") .. config.get_value_for("hwo_text_file")
+    local hwo_f = io.open(hwo_file, "r") 
+    if hwo_f then
+        local hwo_rec = utils.trim_spaces(hwo_f:read("*all"))
+        hwo_f:close()
+        if hwo_rec == "no" then
+            email.send_alert("HWO Issued", config.get_value_for("wxhome") .. "/" .. config.get_value_for("wx_hazardous_output_file"))  
+            hwo_f = assert(io.open(hwo_file, "w"))
+            hwo_f:write("yes")
+            hwo_f:close()
+        end
+    end
+end
 

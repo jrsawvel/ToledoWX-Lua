@@ -7,7 +7,7 @@ local io      = require "io"
 local lyaml   = require "lyaml"
 
 
-local filename = "/home/toledoweatherlua/ToledoWXLua/yaml/wxlua.yml"
+local filename = "/home/toledoweatherlua/config/wxlua.yml"
 
 local f = assert(io.open(filename, "r"))
 
