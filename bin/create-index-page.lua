@@ -352,6 +352,7 @@ else
 end
 
 
+
 local zone_json  = utils.get_web_page(config.get_value_for("lucas_county_zone_json"))
 if zone_json == nil  then
     error("Could not retrieve JSON for Lucas County Zone.")
@@ -397,6 +398,7 @@ for i=1, #a_hazard_text do
     end
     h_alerts[hazard] = hazard_url
 end
+
 
 
 local a_alert_button_loop = {}
@@ -445,7 +447,12 @@ for k,v in pairs(h_alerts) do
     end
 
 
-    msg = utils.remove_html(msg)
+    -- 11oct2018 - segmentation fault occurs when using gsub in rex_pcre. 
+    --             14 kb of text. no biggie. 
+    --             called my remove_html function in ../lib/utils.lua.
+    --             it blows up. no info other than "Segmentation Fault".
+    --             commented it out for now.
+    -- msg = utils.remove_html(msg)
     msg = utils.trim_spaces(msg)
     msg = utils.newline_to_br(msg)
 
@@ -534,4 +541,21 @@ if not no_important_hazardous_outlook_exists then
         end
     end
 end
+
+
+local ctr
+for ctr=1, #lc_alerts do
+    if lc_alerts[ctr].alert ~= "Hazardous Weather Outlook" then
+        email.send_alert(lc_alerts[ctr].alert .. " " .. lc_alerts[ctr].alerttime, lc_alerts[ctr].wxhome .. "/" .. lc_alerts[ctr].url)
+    end
+end
+
+
+local tmp_a = a_reversed_alert_button_loop
+for ctr=1, #tmp_a do
+    if tmp_a[ctr].alert ~= "Hazardous Weather Outlook" then
+        email.send_alert(tmp_a[ctr].alert .. " " .. tmp_a[ctr].alerttime, tmp_a[ctr].wxhome .. "/" .. tmp_a[ctr].url)
+    end
+end
+
 
