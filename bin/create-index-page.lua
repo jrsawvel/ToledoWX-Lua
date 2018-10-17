@@ -526,10 +526,12 @@ o:write(html_output)
 o:close()
 
 
+local hwo_file = config.get_value_for("htmldir") .. config.get_value_for("hwo_text_file")
+local hwo_f
+
 if not no_important_hazardous_outlook_exists then 
     -- in other words if TRUE for the existence of a HWO
-    local hwo_file = config.get_value_for("htmldir") .. config.get_value_for("hwo_text_file")
-    local hwo_f = io.open(hwo_file, "r") 
+    hwo_f = io.open(hwo_file, "r") 
     if hwo_f then
         local hwo_rec = utils.trim_spaces(hwo_f:read("*all"))
         hwo_f:close()
@@ -540,13 +542,27 @@ if not no_important_hazardous_outlook_exists then
             hwo_f:close()
         end
     end
+else
+    hwo_f = assert(io.open(hwo_file, "w"))
+    hwo_f:write("no")
+    hwo_f:close()
 end
 
 
 local ctr
 for ctr=1, #lc_alerts do
     if lc_alerts[ctr].alert ~= "Hazardous Weather Outlook" then
-        email.send_alert(lc_alerts[ctr].alert .. " " .. lc_alerts[ctr].alerttime, lc_alerts[ctr].wxhome .. "/" .. lc_alerts[ctr].url)
+        local tmp_str = lc_alerts[ctr].alert .. " " .. lc_alerts[ctr].alerttime
+        local alert_exists_filename = config.get_value_for("htmldir") .. utils.clean_title(tmp_str) .. os.date("%d%b%Y",   os.time()) .. ".txt"
+        local alert_fp = io.open(alert_exists_filename, "r") 
+        if not alert_fp then
+            email.send_alert(tmp_str, lc_alerts[ctr].wxhome .. "/" .. lc_alerts[ctr].url)
+            local new_alert_fp = assert(io.open(alert_exists_filename, "w"))
+            new_alert_fp:write("yes")
+            new_alert_fp:close()
+        else
+            alert_fp:close()
+        end
     end
 end
 
@@ -554,7 +570,17 @@ end
 local tmp_a = a_reversed_alert_button_loop
 for ctr=1, #tmp_a do
     if tmp_a[ctr].alert ~= "Hazardous Weather Outlook" then
-        email.send_alert(tmp_a[ctr].alert .. " " .. tmp_a[ctr].alerttime, tmp_a[ctr].wxhome .. "/" .. tmp_a[ctr].url)
+        local tmp_str = tmp_a[ctr].alert .. " " .. tmp_a[ctr].alerttime
+        local alert_exists_filename = config.get_value_for("htmldir") .. utils.clean_title(tmp_str) .. os.date("%d%b%Y",   os.time()) .. ".txt"
+        local alert_fp = io.open(alert_exists_filename, "r") 
+        if not alert_fp then
+            email.send_alert(tmp_str, tmp_a[ctr].wxhome .. "/" .. tmp_a[ctr].url)
+            local new_alert_fp = assert(io.open(alert_exists_filename, "w"))
+            new_alert_fp:write("yes")
+            new_alert_fp:close()
+        else
+            alert_fp:close()
+        end
     end
 end
 
