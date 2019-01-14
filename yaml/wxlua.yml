@@ -1,17 +1,17 @@
     home_page:                        /
-    outlook_home_page:                http://toledoweatherlua.soupmode.com/convective-outlook.html
-    afds_home_page:                   http://toledoweatherlua.soupmode.com/area-forecast-discussions.html
-    radar_home_page:                  http://toledoweatherlua.soupmode.com/radar.html
-    errors_home_page:                 http://toledoweatherlua.soupmode.com/errors.html
-    more_radars_maps_home_page:       http://toledoweatherlua.soupmode.com/more-radars-and-maps.html
-    wxhome:                           http://toledoweatherlua.soupmode.com
-    imagehome:                        http://toledoweatherlua.soupmode.com/images
-    cssurl:                           http://toledoweatherlua.soupmode.com/css/wx.css
+    outlook_home_page:                http://toledoweather.info/convective-outlook.html
+    afds_home_page:                   http://toledoweather.info/area-forecast-discussions.html
+    radar_home_page:                  http://toledoweather.info/radar.html
+    errors_home_page:                 http://toledoweather.info/errors.html
+    more_radars_maps_home_page:       http://toledoweather.info/more-radars-and-maps.html
+    wxhome:                           http://toledoweather.info
+    imagehome:                        http://toledoweather.info/images
+    cssurl:                           http://toledoweather.info/css/wx.css
     imagedir:                         /home/toledoweatherlua/root/images/
     htmldir:                          /home/toledoweatherlua/root/
     errors_file:                      /home/toledoweatherlua/log/error.txt
     template_home:                    /home/toledoweatherlua/ToledoWXLua/tmpl
-    site_name:                        Toledo Weather Lua
+    site_name:                        Toledo Weather
     lucas_county_zone_json:           https://forecast.weather.gov/MapClick.php?lat=41.5924&lon=-83.8084&unit=0&lg=english&FcstType=json
     lucas_county_hourly_forecast_json: https://forecast.weather.gov/MapClick.php?lat=41.59241&lon=-83.80838&FcstType=digitalJSON
     toledo_suburban_ap:               https://forecast.weather.gov/MapClick.php?lat=41.7359&lon=-83.6533&unit=0&lg=english&FcstType=json
