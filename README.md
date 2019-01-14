@@ -1,5 +1,11 @@
 # ToledoWX-Lua
 
+**Jan 14, 2019 update:** I changed Nginx to use ToledoWX-Lua to support toledoweather.info, which had been supported by the Perl version of the code, since the summer of 2013. Since I have been using toledoweatherlua.soupmode.com for several months, I decided to make this change. I need to create a toledoweatherperl.soupmode.com to host the Perl version of the app. For now, I'll continue to use the March 2018 version of the README file that is shown below.
+
+
+---
+
+
 ToledoWX-Lua displays Toledo, Ohio weather information that is pulled from National Weather Serivce XML files, JSON files, plain text files, and HTML pages. The code also fetches JSON data from [DarkSky.net](https://darksky.net).
 
 This code will be based upon Lua, instead of Perl, which is what I used to create the original ToledoWX code, located at <https://github.com/jrsawvel/ToledoWX>. The original ToledoWX manages my site <http://toledoweather.info>.
@@ -25,4 +31,5 @@ Here are the list of modules, installed from [LuaRocks](https://luarocks.org), e
 * html-entities - (htmlEntities)
 
 
-*created January 2018* - *updated March 2018*
+*created January 2018* - *updated January 2019*
+

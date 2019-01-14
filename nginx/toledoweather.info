@@ -1,0 +1,31 @@
+
+##########
+# toledoweather.info
+##########
+
+ server {
+
+	listen   80; ## listen for ipv4; this line is default and implied
+
+        # jrs - january 14, 2019 - change from the perl-based app at /home/toledoweather
+        #     to the lua version. over 5.5 years, I have used the perl based app.
+	# root /home/toledoweather/root;
+	root /home/toledoweatherlua/root;
+        index index.html;
+
+	# Make site accessible from http://localhost/
+	server_name toledoweather.info www.toledoweather.info;
+
+        location ~ ^/(css/|images/) {
+          root /home/toledoweatherlua/root;
+          access_log off;
+          # expires max;
+          expires -1;
+        }
+
+    location /alexa.json {
+        charset_types application/json;
+        charset UTF-8;
+        root /home/toledoweatherlua/root;
+    }
+}
