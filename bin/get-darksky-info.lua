@@ -59,7 +59,7 @@ for i=1, #minutely do
         hash.precipType = m.precipType
         hash.precipChance = true
         if hash.precipProbability >= 50 then prob_hit = true end
-        if hash.precipIntensity >= 125 then inten_hit = true end -- mod-hvy and higher
+        if m.precipIntensity >= 125 then inten_hit = true end -- mod-hvy and higher
     else
         hash.precipProbability = 0
         hash.noPrecipChance = true
@@ -174,7 +174,7 @@ for i=1, #s_minutely do
         hash.precipType = m.precipType
         hash.precipChance = true
         if hash.precipProbability >= 50 then prob_hit = true end
-        if hash.precipIntensity >= 125 then inten_hit = true end -- mod-hvy and higher
+        if m.precipIntensity >= 125 then inten_hit = true end -- mod-hvy and higher
     else
         hash.precipProbability = 0
         hash.noPrecipChance = true
