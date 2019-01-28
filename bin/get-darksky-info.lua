@@ -221,6 +221,58 @@ end
 
 
 
+-- data exists for each hour for the next 48 hours, but I'll use only the first 24 hours.
+local hourly = wx.hourly.data 
+local hourly_loop = {}
+
+for i=1, 24 do
+    local hash = {}
+    local h = hourly[i]
+
+    hash.GMTDate = dsutils.format_date_iso(h.time)
+    hash.localDate = os.date("%I:%M %p, %a, %b %d, %Y ", h.time + (wx.offset * 3600))
+    hash.icon = h.icon
+    hash.temperature = dsutils.round(h.temperature)
+    hash.apparentTemperature = dsutils.round(h.apparentTemperature)
+
+
+    local wd, ws, wg -- wind direction, wind speed, and wind gust
+    ws = dsutils.round(h.windSpeed)
+    if ws == 0 or h.windBearing == nil then
+        hash.windDirection = "Calm" 
+    else 
+        wd  = dsutils.degrees_to_cardinal(h.windBearing)
+        wg  = dsutils.round(h.windGust)
+        hash.windDirection =  wd .. " " .. ws .. " mph, gust: " .. wg .. " mph"
+    end
+
+    hash.precipType = h.precipType
+
+    if h.precipIntensity > 0.0 then
+        hash.precipProbability =  dsutils.round(h.precipProbability * 100) .. "%"
+        local x,y = dsutils.calc_precip_intensity_and_color(h.precipIntensity)
+        hash.precipIntensity = x
+    else
+        hash.precipProbability = "0%"
+    end
+
+    hash.cloudCoverAmount = dsutils.round(h.cloudCover * 100) .. "%"
+    hash.cloudCoverDesc   = dsutils.cloud_cover_description(h.cloudCover)
+
+    hash.humidity =  dsutils.round(h.humidity * 100) .. "%"
+
+    local uvi_rating, uvi_color = dsutils.get_uvindex_info(h.uvIndex)
+    hash.uviIndex = uvi_rating 
+
+    hourly_loop[i] = hash
+end
+
+page.set_template_variable("hourly_loop", hourly_loop)
+
+
+
+
+
 local daily = wx.daily.data
 local daily_loop = {}
 

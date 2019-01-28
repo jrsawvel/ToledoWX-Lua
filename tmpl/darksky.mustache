@@ -42,15 +42,31 @@ Nearest Precip Bearing: {{{currently_nearest_precip_bearing}}}
 </div>
 
 
-
+<div data-role="collapsible-set" data-inset="false">
+<div data-role="collapsible">
+<h3>Next 24 Hours: <small>{{{hourly_summary}}}</small></h3>
+<p>{{{hourly_summary}}}</p>
+{{#hourly_loop}}
 <p>
-<strong>Next 24 Hours:</strong> {{{hourly_summary}}}
+ <strong>{{{localDate}}}</strong> - {{{GMTDate}}} - 
+ Icon: {{{icon}}}.
+ Temp: {{{temperature}}}.
+ Apparent temp: {{{apparentTemperature}}}.
+ Wind: {{{windDirection}}}.
+ Precip type: {{{precipType}}}.
+ Precip probability: {{{precipProbability}}}.
+ Precip intensity: {{{precipIntensity}}}.
+ Cloud cover amt: {{{cloudCoverAmount}}}.
+ Cloud cover desc: {{{cloudCoverDesc}}}.
+ Humidity: {{{humidity}}}.
+ UVI Index: {{{uviIndex}}}.
 </p>
-
+{{/hourly_loop}}
+</div>
+</div>
 
 
 <div data-role="collapsible-set" data-inset="false">
-
 <div data-role="collapsible">
 {{#no_alerts}}
 <h3>No alerts exist.</h3>
@@ -68,8 +84,10 @@ Nearest Precip Bearing: {{{currently_nearest_precip_bearing}}}
 {{/alerts_loop}}
 {{/have_alerts}}
 </div>
+</div>
 
 
+<div data-role="collapsible-set" data-inset="false">
 <div data-role="collapsible">
 <h3>Next 7 Days: <small>{{{daily_summary}}}</small></h3>
 <p>{{{daily_summary}}}</p>
@@ -96,6 +114,7 @@ Nearest Precip Bearing: {{{currently_nearest_precip_bearing}}}
  Moon: {{{moonPhase}}} = {{{moonPhaseDesc}}}.
 </p>
 {{/daily_loop}}
+</div>
 </div>
 
 
