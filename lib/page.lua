@@ -65,5 +65,11 @@ function read_partial(partial_tmpl_name)
 end
 
 
+function M.reset()
+    view_model = {} 
+    partials   = {}
+    template_text = ""
+end
+
 return M
 

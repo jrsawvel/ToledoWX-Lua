@@ -159,6 +159,31 @@ o:close()
 
 
 
+--[[
+local text_output = utils.remove_html(html_output)
+text_output = utils.remove_newline(text_output)
+local text_output_filename =  config.get_value_for("htmldir") .. "current-conditions.txt"
+local text_o = assert(io.open(text_output_filename, "w"))
+text_o:write(text_output)
+text_o:close()
+]]
+
+page.reset()
+page.set_template_name("conditionstext");
+if express_loop ~= nil then
+    page.set_template_variable("express_loop" ,express_loop);
+end
+if executive_loop ~= nil then
+    page.set_template_variable("executive_loop" ,executive_loop);
+end
+if suburban_loop ~= nil then
+    page.set_template_variable("suburban_loop" ,suburban_loop);
+end
+local text_output = page.get_output_min()
+local text_output_filename =  config.get_value_for("htmldir") .. "current-conditions.txt"
+local text_o = assert(io.open(text_output_filename, "w"))
+text_o:write(text_output)
+text_o:close()
 
 
 
