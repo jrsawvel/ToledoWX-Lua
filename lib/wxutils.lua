@@ -117,12 +117,17 @@ end
 
 function M.calc_wind_chill (tempf, windmph)  
     
-    if ( utils.is_numeric(tempf) == false or utils.is_numeric(windmph) == false ) then
-        return 999
-    end 
-
     tempf = tonumber(tempf)
     windmph = tonumber(windmph)
+
+    if ( tempf == nil or windmph == nil ) then
+        return 999
+    end
+
+--    if ( utils.is_numeric(tempf) == false or utils.is_numeric(windmph) == false ) then
+--            return 999
+--    end 
+
 
     if ( tempf > 50 or windmph < 3 ) then
         return 999
@@ -175,12 +180,16 @@ end
 
 function M.calc_relative_humidity(Tf, Tdf)
 
-    if ( utils.is_numeric(Tf) == false or utils.is_numeric(Tdf) == false ) then
-        return 0
-    end 
-
     Tf  = tonumber(Tf)
     Tdf = tonumber(Tdf)
+
+    if ( Tf == nil or Tdf == nil ) then
+        return 0
+    end
+
+--    if ( utils.is_numeric(Tf) == false or utils.is_numeric(Tdf) == false ) then
+--        return 0
+--    end 
 
     -- convert to celsius
 
