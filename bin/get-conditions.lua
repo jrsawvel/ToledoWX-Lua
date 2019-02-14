@@ -71,6 +71,10 @@ function parse_json_table (t)
     if ( tmp_hr > 12 ) then
         tmp_hr = tmp_hr - 12
     end
+    if ( tmp_hr == 0 ) then
+        tmp_hr = 12 -- 12 am hour
+    end
+
 
 
     my_hash.updatedate = string.format("%s %s, %s %d:%s %s %s", 

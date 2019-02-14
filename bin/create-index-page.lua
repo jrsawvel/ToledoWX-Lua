@@ -371,6 +371,9 @@ local tmp_hr = tonumber(tmp_time[1])
 if ( tmp_hr > 12 ) then
     tmp_hr = tmp_hr - 12
 end
+if ( tmp_hr == 0 ) then
+    tmp_hr = 12
+end
 h_conditions.updatedate = string.format("%d:%s%s", tmp_hr, tmp_time[2], a_dt[4])
 
 
