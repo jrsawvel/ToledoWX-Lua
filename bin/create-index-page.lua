@@ -194,14 +194,14 @@ end
 local function get_mesoscale_info()
     -- local md_xml = utils.get_unsecure_web_page(config.get_value_for("spc_md_xml"))
     local md_xml = utils.get_web_page(config.get_value_for("spc_md_xml"))
-    local parsed = feedparser.parse(md_xml)
+    local md_parsed = feedparser.parse(md_xml)
 
-    local a_entries = parsed.entries -- rss items
+    local md_a_entries = md_parsed.entries -- rss items
     local a_list = {}
     local counter = 1
 
-    for i=1,#a_entries do
-        local hash = process_md_item(a_entries[i])
+    for i=1,#md_a_entries do
+        local hash = process_md_item(md_a_entries[i])
         if next(hash) ~= nil then
             a_list[counter] = hash
             counter = counter + 1
@@ -228,31 +228,30 @@ end
 
 local function get_lc_alerts(a_zone_alerts)
     local body,c,l,h = utils.get_web_page(config.get_value_for("lucas_county_alerts_xml"))
-    local parsed = feedparser.parse(body)
+    local lc_parsed = feedparser.parse(body)
 
-    local a_entries = parsed.entries -- atom items
+    local lc_a_entries = lc_parsed.entries -- atom items
 
     local a_alert_button_loop = {}
 
-
-    if a_entries[1].title == "There are no active watches, warnings or advisories" then
+    if lc_a_entries[1].title == "There are no active watches, warnings or advisories" then
         return a_alert_button_loop
     end
 
     local already_exists_counter = 0
 
-    for i=1,#a_entries do
-        -- a_entries[i].summary
+    for i=1,#lc_a_entries do
+        -- lc_a_entries[i].summary
 
---        local statement, dummy = rex.match(a_entries[i].title, "^(.*) issued(.*)", 1, "m")
+--        local statement, dummy = rex.match(lc_a_entries[i].title, "^(.*) issued(.*)", 1, "m")
 --        if utils.is_empty(statement) == true then
---            statement = string.sub(a_entries[i].title, 1, 20)
+--            statement = string.sub(lc_a_entries[i].title, 1, 20)
 --        end
 
-        body,c,l,h = utils.get_web_page(a_entries[i].link)
+        body,c,l,h = utils.get_web_page(lc_a_entries[i].link)
     
         if body == nil then
-            error("Could not retrieve " .. a_entries[i].link .. ".")
+            error("Could not retrieve " .. lc_a_entries[i].link .. ".")
         end
 
         local iso_time = rex.match(body, "<sent>(.*)</sent>", 1, "s") 
@@ -261,7 +260,10 @@ local function get_lc_alerts(a_zone_alerts)
 
         local event = rex.match(body, "<event>(.*)</event>", 1, "s") 
 
-     if does_alert_exist(a_zone_alerts, event) == false then
+        event = utils.trim_spaces(event)
+print("DEBUG TYPE EVENT: " .. type(event) .. "  strlen = " .. string.len(event))
+
+     if does_alert_exist(a_zone_alerts, event) == false and string.len(event) > 0 then
 
         local headline = rex.match(body, "<headline>(.*)</headline>", 1, "s") 
 
@@ -273,6 +275,7 @@ local function get_lc_alerts(a_zone_alerts)
         msg = utils.newline_to_br(msg)
         
         local filename = event 
+
         filename = string.lower(filename)
         filename = string.gsub(filename, ' ', '-')
         filename = "lc-alert-" .. filename .. ".html"
